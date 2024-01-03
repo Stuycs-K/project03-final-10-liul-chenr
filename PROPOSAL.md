@@ -2,7 +2,7 @@
 
 ## Group Members:
 
-names here.
+Regina Chen, Lala Liu
        
 # Intentions:
 
