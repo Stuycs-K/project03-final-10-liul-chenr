@@ -18,4 +18,11 @@ We will be working with mp3 files and using sockets with a main server forking s
     
 # Intended pacing:
 
-A timeline with expected completion dates of parts of the project.
+- Adding mp3 songs to library - Regina, 1/4
+- Set up server and client connection - Regina 1/5
+- Set up library commands (file of song names, add/remove, playlist making, etc) - Lala for now, 1/5
+- Testing play feature - Lala, 1/8
+- Signals - Lala, 1/8
+- Forking - Regina, 1/8
+- Public playlist - tbd, 1/9-1/10
+- Collaboration playlist - tbd if we get everything as intended (extra?)
