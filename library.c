@@ -12,6 +12,30 @@ void extension( char* buff, char* name, char* type){
 	strcat( buff, type);
 }
 
+void getMP3names() {
+    DIR * d;
+    char* PATH = "./";
+    struct dirent *entry;
+    char buff[256];
+    
+    int total_bytes=0;
+    d = opendir(PATH);
+    if (d == NULL) err();
+    printf("Regular files:\n");
+    
+    int rbyte;
+    
+    while((entry = readdir( d ))){
+        if (entry->d_type!=4) {
+            printf("\t%s\n",entry->d_name);
+//            printf("\t--type: %d\n",entry->d_type);
+        }
+    }
+    closedir(d);
+    free(PATH);
+    
+}
+
 struct song_node* insert_front( struct song_node *n, char *name){
 	struct song_node* newNode = (struct song_node*) malloc( sizeof( struct song_node));
 	strcpy( newNode->name, name);
