@@ -67,6 +67,12 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return newNode;
 }
 
+int make_playlist( char* playlist){
+	char pl[ strlen( playlist) + 4];
+	extension( p1, playlist, ".txt");
+
+}
+
 struct song_node* free_list( struct song_node *n){
 	while( n != NULL){
 		struct song_node* node = n;

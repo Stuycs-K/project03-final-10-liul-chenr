@@ -28,6 +28,7 @@ int main(){
 	
 	printf("\nTesting add_song\n");
 	list = add_song( list, "songs", "animal");
+	print_list( list);
 	printf("-------------------------\n");
 	
 	printf("\nTesting free_list\n");
