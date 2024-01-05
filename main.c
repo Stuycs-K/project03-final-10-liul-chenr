@@ -5,26 +5,28 @@ static void sighandler(int signo) {
     if (signo == SIGINT) exit(0);
 }
 
-void rot13(char * str) {
-    int i=0;
-    while (i < strlen(str)) {
-        if (str[i]>96 && str[i]<123) str[i] = (str[i] - 97 + 13) % 26 + 97;
-        else if (str[i]>64 && str[i]<91) str[i] = (str[i] - 65 + 13) % 26 + 65;
-        i++;
-    }
-}
+//void rot13(char * str) {
+//    int i=0;
+//    while (i < strlen(str)) {
+//        if (str[i]>96 && str[i]<123) str[i] = (str[i] - 97 + 13) % 26 + 97;
+//        else if (str[i]>64 && str[i]<91) str[i] = (str[i] - 65 + 13) % 26 + 65;
+//        i++;
+//    }
+//}
 
 void subserver_logic(int user_socket){
-    int pid = getpid();
-    char buff[BUFFER_SIZE];
-    while((read(user_socket, buff, sizeof(buff))) > 0) {
-//        sleep(1);
-        printf("subserver %d read from user: %s\n", pid, buff);
-        rot13(buff);
-        if (write(user_socket, buff, sizeof(buff)) == -1) {
-            err(errno, "write error");
-        }
-    }
+//    int pid = getpid();
+//    char buff[BUFFER_SIZE];
+//    while((read(user_socket, buff, sizeof(buff))) > 0) {
+////        sleep(1);
+//        printf("subserver %d read from user: %s\n", pid, buff);
+//        rot13(buff);
+//        if (write(user_socket, buff, sizeof(buff)) == -1) {
+//            err(errno, "write error");
+//        }
+//    }
+    
+    
 }
 
 int main(int argc, char *argv[] ) {
