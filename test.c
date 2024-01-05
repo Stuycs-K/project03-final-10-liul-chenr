@@ -27,7 +27,9 @@ int main(){
 	printf("-------------------------\n");
 	
 	printf("\nTesting add_song\n");
-	list = add_song( list, "songs", "animal");
+	char pl[100];
+	make_playlist( pl, "songs");
+	list = add_song( list, pl, "animal");
 	print_list( list);
 	printf("-------------------------\n");
 	

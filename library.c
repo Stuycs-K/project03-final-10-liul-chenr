@@ -67,10 +67,21 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return newNode;
 }
 
-int make_playlist( char* playlist){
+void make_playlist( char* buff, char* playlist){
 	char pl[ strlen( playlist) + 4];
-	extension( p1, playlist, ".txt");
+	extension( pl, playlist, ".txt");
 
+	int file = open( pl, O_CREAT | O_EXCL, 0644);
+	if( file == -1){
+		printf( "playlist already exist\n");
+		fgets( buff, 99, stdin);
+		buff[ strlen(buff) - 1] = 0;
+		printf( "new name: %s\n", buff);
+		make_playlist( buff, buff);
+	}
+	
+	strcat( buff, pl);
+	close( file);
 }
 
 struct song_node* free_list( struct song_node *n){
