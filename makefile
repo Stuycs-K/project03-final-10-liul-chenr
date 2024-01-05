@@ -1,10 +1,10 @@
 default: run
 clean: 
 	@rm -f *.o prog
-compile prog: main.o library.o
-	@gcc -o prog main.o library.o
-main.o: main.c library.h
-	@gcc -c main.c
+compile prog: test.o library.o
+	@gcc -o prog test.o library.o
+test.o: test.c library.h
+	@gcc -c test.c
 library.o: library.c library.h
 	@gcc -c library.c
 run: prog
