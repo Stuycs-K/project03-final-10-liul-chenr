@@ -23,8 +23,11 @@ int main(){
 	list = order( list, "1984");
 	list = order( list, "cold cold man");
 	list = order( list, "1984");
-	list = order( list, "animal");
 	print_list( list);
+	printf("-------------------------\n");
+	
+	printf("\nTesting add_song\n");
+	list = add_song( list, "songs", "animal");
 	printf("-------------------------\n");
 	
 	printf("\nTesting free_list\n");
