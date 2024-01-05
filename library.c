@@ -1,5 +1,11 @@
 #include "library.h"
 
+int err(){
+    printf("errno %d\n",errno);
+    printf("%s\n",strerror(errno));
+    exit(1);
+}
+
 void print_list( struct song_node *n){
 	if( n != NULL){
 		printf( "Song: %s\n", n->name);
@@ -14,26 +20,22 @@ void extension( char* buff, char* name, char* type){
 
 void getMP3names() {
     DIR * d;
-    char* PATH = "./";
+    char* PATH = "./music_library/";
     struct dirent *entry;
     char buff[256];
     
-    int total_bytes=0;
     d = opendir(PATH);
     if (d == NULL) err();
-    printf("Regular files:\n");
-    
-    int rbyte;
-    
+    printf("MP3 files:\n");
+        
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
-            printf("\t%s\n",entry->d_name);
+            printf("%s\n",entry->d_name);
 //            printf("\t--type: %d\n",entry->d_type);
         }
     }
     closedir(d);
     free(PATH);
-    
 }
 
 struct song_node* insert_front( struct song_node *n, char *name){
