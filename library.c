@@ -53,9 +53,10 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	
 	char pl[ strlen( playlist) + 4];
 	extension( pl, playlist, ".txt");
-	printf( "opening %s\n", pl);
 	
+	// printf( "opening %s\n", playlist);
 	int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
+	err( p_file, "p_file failed to open");
 		
 	while( newNode != NULL){
 		write( p_file, newNode->name, strlen( newNode->name));
@@ -70,6 +71,7 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 void make_playlist( char* buff, char* playlist){
 	char pl[ strlen( playlist) + 4];
 	extension( pl, playlist, ".txt");
+	printf( "%s\n", pl);
 
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
@@ -77,11 +79,38 @@ void make_playlist( char* buff, char* playlist){
 		fgets( buff, 99, stdin);
 		buff[ strlen(buff) - 1] = 0;
 		printf( "new name: %s\n", buff);
-		make_playlist( buff, buff);
+		char nbuff[100];
+		make_playlist( nbuff, buff);
 	}
+	else
+		strcpy( buff, playlist);
 	
-	strcat( buff, pl);
 	close( file);
+}
+
+void play_song( char* name){
+	char song[ 14 + strlen( name) + 4];
+	extension( song, "music_library/", name);
+	extension( song, song, ".mp3");
+	printf( "command: %s\n", song);
+	
+	char* cmdargv[1];
+	cmdargv[0] = "mpg123";
+	cmdargv[1] = song;
+	
+	pid_t p;
+	p = fork();
+	err( p, "forking err");
+	if( p == 0){
+		printf( "playing: %s\n\n", name);
+		execvp( cmdargv[0], cmdargv);
+		err( errno, "execvp err");
+	}
+	else{
+		int status;
+		pid_t id = wait( &status);
+		err( status, "wait err");
+	}
 }
 
 struct song_node* free_list( struct song_node *n){

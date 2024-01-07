@@ -1,6 +1,6 @@
 default: run
 clean: 
-	@rm -f *.o prog
+	@rm -f *.o prog *.txt
 compile prog: test.o library.o
 	@gcc -o prog test.o library.o
 test.o: test.c library.h
