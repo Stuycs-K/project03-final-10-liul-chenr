@@ -16,6 +16,7 @@ void extension( char* buff, char* name, char* type){
 //	strcpy( buff, name);
 //	strcat( buff, type);
     snprintf(buff, 256, "%s%s", name, type);
+    printf("buff: %s\n", buff);
 }
 
 /*
@@ -43,11 +44,11 @@ struct song_node* getMP3names(struct song_node* list) {
     if (d == NULL) err(errno, "open directory error");
     
     char * library_playlist;
-    make_playlist(library_playlist, "library");
-    printf("library created\n");
+    make_playlist(library_playlist, "musiclib");
+    printf("%s created\n", library_playlist);
     
     char* librarypath;
-    extension(librarypath, library_playlist, ".txt");
+    snprintf(librarypath, 256, "%s%s", library_playlist, ".txt");
     printf("librarypath: %s\n", librarypath);
     
     while((entry = readdir( d ))){
