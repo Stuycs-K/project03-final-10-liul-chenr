@@ -189,15 +189,15 @@ void make_playlist( char* buff, char* playlist){
 void play_song( char* name){
 	
 	//adds music_library/ and .mp3 onto the song name
-	//char song[ 14 + strlen( name) + 4];
-	char* song = (char*) malloc( (14 + strlen( name) + 4) * sizeof( char));
+	char song[ 14 + strlen( name)];
 	extension( song, "music_library/", name);
-	extension( song, song, ".mp3");
-	printf( "command: %s\n", song);
+	char songname[ sizeof(song) + 4];
+	extension( songname, song, ".mp3");
+	printf( "command: %s\n", songname);
 	
 	char* cmdargv[2];
 	cmdargv[0] = "mpg123";
-	cmdargv[1] = song;
+	cmdargv[1] = songname;
 	
 	pid_t p;
 	p = fork();

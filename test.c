@@ -2,7 +2,7 @@
 
 int main(){
 
-	// struct song_node* list = NULL;
+	struct song_node* list = NULL;
 	
 
 //	printf("\nTesting order\n");
@@ -52,11 +52,11 @@ int main(){
 	// print_list( list);
 	// printf("-------------------------\n");
 
-	printf("\nTesting play_song\n");
-	play_song( "da_capo");
+	// printf("\nTesting play_song\n");
+	// play_song( "da_capo");
 
-	// printf("\nTesting play_playlist\n");
-	// play_playlist( "songs");
+	printf("\nTesting play_playlist\n");
+	play_playlist( "songs");
 	
 	// list = free_list( list);
 }
