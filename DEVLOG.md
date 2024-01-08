@@ -7,8 +7,10 @@
 -  Get the socket and fork from lab16 and modify it a bit (will modify logic later on)
 -  researching on how to install a music player that works on all devices (sox maybe but don't know how to install on lab machine, don't think we can install?)
 
-### 2024-01-05 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-05 - Worked on library (~ 3hrs)
+-  Fixed add_song so that it add the song name to the list and then all to a .txt file
+-  Created and fixed getMP3names which takes the .mp3 files and turn them into a list of structs. Took some time to get rid of the .mp3 extension when adding it to the list.
+-  Tested methods
 
 ## Lala
 
