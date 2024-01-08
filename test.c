@@ -1,9 +1,9 @@
 #include "library.h"
 
 int main(){
-//	
-//	struct song_node* list = NULL;
-//	
+
+	struct song_node* list = NULL;
+	
 //	printf("\nTesting order\n");
 //	list = order( list, "fish in a birdcage");
 //	list = order( list, "our last summer");
@@ -27,7 +27,9 @@ int main(){
 //	printf("-------------------------\n");
 //	
 //	printf("\nTesting add_song\n");
-//	list = add_song( list, "songs", "animal");
+//	char pl[100];
+//	make_playlist( pl, "songs");
+//	list = add_song( list, pl, "animal");
 //	print_list( list);
 //	printf("-------------------------\n");
 //	
@@ -38,5 +40,8 @@ int main(){
 //	printf(" ]\n");
 //	printf("-------------------------\n");
     
-    getMP3names();
+    list = getMP3names(list);
+    printf("printing...\n");
+    print_list(list);
+    
 }

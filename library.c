@@ -13,7 +13,7 @@ void extension( char* buff, char* name, char* type){
 }
 
 //get the song names of all mp3 in the music library
-void getMP3names() {
+struct song_node* getMP3names(struct song_node* list) {
     DIR * d;
     char* PATH = "./music_library/";
     struct dirent *entry;
@@ -21,16 +21,16 @@ void getMP3names() {
     
     d = opendir(PATH);
     if (d == NULL) err(errno, "open directory error");
-    printf("MP3 files:\n");
         
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
-            printf("%s\n",entry->d_name);
-//            printf("\t--type: %d\n",entry->d_type);
+            list = order(list, entry->d_name);
         }
     }
     
     closedir(d);
+    
+    return list;
 }
 
 struct song_node* insert_front( struct song_node *n, char *name){
@@ -88,11 +88,22 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return newNode;
 }
 
-//int make_playlist( char* playlist){
-//	char pl[ strlen( playlist) + 4];
-//	extension( p1, playlist, ".txt");
-//
-//}
+void make_playlist( char* buff, char* playlist){
+	char pl[ strlen( playlist) + 4];
+	extension( pl, playlist, ".txt");
+
+	int file = open( pl, O_CREAT | O_EXCL, 0644);
+	if( file == -1){
+		printf( "playlist already exist\n");
+		fgets( buff, 99, stdin);
+		buff[ strlen(buff) - 1] = 0;
+		printf( "new name: %s\n", buff);
+		make_playlist( buff, buff);
+	}
+	
+	strcat( buff, pl);
+	close( file);
+}
 
 struct song_node* free_list( struct song_node *n){
 	while( n != NULL){
