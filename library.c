@@ -107,15 +107,12 @@ struct song_node* order( struct song_node *n, char *name){
 struct song_node* add_song( struct song_node* p_node, char* playlist, char* name){
 	
 	//inserts the song into the linked list playlist
-	struct song_node* newNode = order( p_node, name);
-	
-	//converts the playlist name to include the .txt extension
-	char pl[ strlen( playlist) + 4];
-	extension( pl, playlist, ".txt");
-	
+    p_node = order( p_node, name);
+	struct song_node* newNode = p_node;
+
 	//opens the playlist file
 	// printf( "opening %s\n", playlist);
-	int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
+	int p_file = open( playlist, O_WRONLY | O_TRUNC, 0644);
 	err( p_file, "p_file failed to open");
 	
 	//write the linked list playlist into the playlist file
@@ -126,7 +123,7 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	}
 	
 	close( p_file);
-	return newNode;
+	return p_node;
 }
 
 /*
@@ -135,13 +132,8 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 */
 void make_playlist( char* buff, char* playlist){
 	
-	//converts the playlist name to include the .txt extension
-	char pl[ strlen( playlist) + 4];
-	extension( pl, playlist, ".txt");
-	//printf( "%s\n", pl);
-
 	//create the file using the playlist name
-	int file = open( pl, O_CREAT | O_EXCL, 0644);
+	int file = open( playlist, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
 		
 		//if the file already exist, prompt the user for a new name
@@ -171,7 +163,7 @@ void play_song( char* name){
 	extension( song, song, ".mp3");
 	// printf( "command: %s\n", song);
 	
-	char* cmdargv[1];
+	char* cmdargv[2];
 	cmdargv[0] = "mpg123";
 	cmdargv[1] = song;
 	
