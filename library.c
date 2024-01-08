@@ -177,11 +177,13 @@ void play_song( char* name){
 	
 	//adds music_library/ and .mp3 onto the song name
 	char song[ 14 + strlen( name) + 4];
-	extension( song, "music_library/", name);
-	extension( song, song, ".mp3");
-	// printf( "command: %s\n", song);
+//    printf("size: %d\n", strlen(song));
+	extension( song, "./music_library/", name);
+    char songpath[strlen(song)+4];
+	extension( songpath, song, ".mp3");
+    printf( "command: %s\n", songpath);
 	
-	char* cmdargv[2];
+	char* cmdargv[16];
 	cmdargv[0] = "mpg123";
 	cmdargv[1] = song;
 	

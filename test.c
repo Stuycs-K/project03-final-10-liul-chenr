@@ -29,8 +29,8 @@ int main(){
 	print_list( list);
 	printf("-------------------------\n");
 
-	// printf("\nTesting play_song\n");
-	// play_song( "rubia");
+	 printf("\nTesting play_song\n");
+	 play_song( "rubia");
 	
 	list = free_list( list);
 }
