@@ -40,6 +40,12 @@ struct song_node* getMP3names(struct song_node* list) {
     
     d = opendir(PATH);
     if (d == NULL) err(errno, "open directory error");
+    
+    char * library_playlist;
+    make_playlist(library_playlist, "music_library.txt");
+    
+    int file = open(library_playlist, O_RDWR | O_EXCL, 0644);
+    if (file == -1) err(errno, "open file error");
         
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
@@ -49,12 +55,18 @@ struct song_node* getMP3names(struct song_node* list) {
 
             // Find and remove the ".mp3"
             char* rm = strstr(songname, ".mp3");
-            if (rm != NULL) *rm = '\0';
-
-            list = order(list, songname);
+            if (rm != NULL) {
+                *rm = '\0';
+                
+                list = order(list, songname);
+                
+                write(file, songname, strlen(songname));
+                write(file, "\n", 1);
+            }
         }
     }
     
+    close(file);
     closedir(d);
     
     return list;
