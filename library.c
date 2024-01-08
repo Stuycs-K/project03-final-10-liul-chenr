@@ -13,8 +13,9 @@ void print_list( struct song_node *n){
 	ex: extentsion( buff, "everything_i_own", ".mp3") will store "everything_i_own.mp3" in buff
 */
 void extension( char* buff, char* name, char* type){
-	strcpy( buff, name);
-	strcat( buff, type);
+//	strcpy( buff, name);
+//	strcat( buff, type);
+    snprintf(buff, 256, "%s%s", name, type);
 }
 
 /*
@@ -42,11 +43,13 @@ struct song_node* getMP3names(struct song_node* list) {
     if (d == NULL) err(errno, "open directory error");
     
     char * library_playlist;
-    make_playlist(library_playlist, "music_library.txt");
+    make_playlist(library_playlist, "library");
+    printf("library created\n");
     
-    int file = open(library_playlist, O_RDWR | O_EXCL, 0644);
-    if (file == -1) err(errno, "open file error");
-        
+    char* librarypath;
+    extension(librarypath, library_playlist, ".txt");
+    printf("librarypath: %s\n", librarypath);
+    
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
             char songname[sizeof(entry->d_name) - 3];
@@ -59,14 +62,19 @@ struct song_node* getMP3names(struct song_node* list) {
                 *rm = '\0';
                 
                 list = order(list, songname);
+                print_list(list);
+                
+//                printf("library playlist: %s\n", library_playlist);
+                
+                int file = open(librarypath, O_WRONLY);
+                err(file, "file error");
                 
                 write(file, songname, strlen(songname));
                 write(file, "\n", 1);
+                close(file);
             }
         }
     }
-    
-    close(file);
     closedir(d);
     
     return list;
