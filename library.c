@@ -1,11 +1,5 @@
 #include "library.h"
 
-int err(){
-    printf("errno %d\n",errno);
-    printf("%s\n",strerror(errno));
-    exit(1);
-}
-
 void print_list( struct song_node *n){
 	if( n != NULL){
 		printf( "Song: %s\n", n->name);
@@ -18,6 +12,7 @@ void extension( char* buff, char* name, char* type){
 	strcat( buff, type);
 }
 
+//get the song names of all mp3 in the music library
 void getMP3names() {
     DIR * d;
     char* PATH = "./music_library/";
@@ -25,7 +20,7 @@ void getMP3names() {
     char buff[256];
     
     d = opendir(PATH);
-    if (d == NULL) err();
+    if (d == NULL) err(errno, "open directory error");
     printf("MP3 files:\n");
         
     while((entry = readdir( d ))){
@@ -34,8 +29,8 @@ void getMP3names() {
 //            printf("\t--type: %d\n",entry->d_type);
         }
     }
+    
     closedir(d);
-    free(PATH);
 }
 
 struct song_node* insert_front( struct song_node *n, char *name){
@@ -93,11 +88,11 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return newNode;
 }
 
-int make_playlist( char* playlist){
-	char pl[ strlen( playlist) + 4];
-	extension( p1, playlist, ".txt");
-
-}
+//int make_playlist( char* playlist){
+//	char pl[ strlen( playlist) + 4];
+//	extension( p1, playlist, ".txt");
+//
+//}
 
 struct song_node* free_list( struct song_node *n){
 	while( n != NULL){

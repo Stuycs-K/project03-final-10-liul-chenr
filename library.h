@@ -18,7 +18,7 @@ struct song_node {
     struct song_node *next;
 	};
 
-int err();
+void err(int i, char* message);
 void getMP3names();
 void print_list( struct song_node *n);
 struct song_node* order( struct song_node *n, char *name);
