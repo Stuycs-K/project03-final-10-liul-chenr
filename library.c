@@ -17,6 +17,19 @@ void extension( char* buff, char* name, char* type){
 	strcat( buff, type);
 }
 
+/*
+	Takes in a string
+	Removes the newline at the end
+*/
+void term( char* line){
+	int i = 0;
+	while( i < strlen( line)){
+		if( line[i] == '\n' || line[i] == '\r')
+			line[i] = 0;
+		i++;
+	}
+}
+
 
 //get the song names of all mp3 in the music library
 struct song_node* getMP3names(struct song_node* list) {
@@ -120,8 +133,8 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	
 	//write the linked list playlist into the playlist file
 	while( newNode != NULL){
-		write( p_file, newNode->name, strlen( newNode->name));
-		write( p_file, "\n", 1);
+		write( p_file, newNode->name, strlen(newNode->name));
+		// write( p_file, "\n", 1);
 		newNode = newNode->next;
 	}
 	
@@ -166,10 +179,11 @@ void make_playlist( char* buff, char* playlist){
 void play_song( char* name){
 	
 	//adds music_library/ and .mp3 onto the song name
-	char song[ 14 + strlen( name) + 4];
+	//char song[ 14 + strlen( name) + 4];
+	char* song = (char*) malloc( (14 + strlen( name) + 4) * sizeof( char));
 	extension( song, "music_library/", name);
 	extension( song, song, ".mp3");
-	// printf( "command: %s\n", song);
+	printf( "command: %s\n", song);
 	
 	char* cmdargv[1];
 	cmdargv[0] = "mpg123";
@@ -187,6 +201,30 @@ void play_song( char* name){
 		int status;
 		pid_t id = wait( &status);
 		err( status, "wait err");
+		// printf( "child process done\n");
+	}
+}
+
+void play_playlist( char* playlist){
+	
+	char pl[ strlen( playlist) + 4];
+	extension( pl, playlist, ".txt");
+	
+	FILE* p_file = fopen( pl, "r");
+	if( p_file == NULL){
+		printf( "playlist does not exist\n");
+		char buff[100];
+		fgets( buff, 99, stdin);
+		buff[ strlen(buff) - 1] = 0;
+		printf( "playing from %s\n", buff);
+		play_playlist( buff);
+	}
+	
+	char song[100];
+	while( fgets( song, 100, p_file) != NULL){
+		term( song);
+		// printf( "%s\n", song);
+		play_song( song);
 	}
 }
 
