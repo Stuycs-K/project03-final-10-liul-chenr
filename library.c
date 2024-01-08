@@ -118,6 +118,8 @@ struct song_node* order( struct song_node *n, char *name){
 		}
 		n = n->next;
 	}
+    
+    return newNode;
 }
 
 /*
@@ -143,7 +145,7 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	//write the linked list playlist into the playlist file
 	while( newNode != NULL){
 		write( p_file, newNode->name, strlen(newNode->name));
-		// write( p_file, "\n", 1);
+		 write( p_file, "\n", 1);
 		newNode = newNode->next;
 	}
 	
@@ -189,16 +191,17 @@ void make_playlist( char* buff, char* playlist){
 void play_song( char* name){
 	
 	//adds music_library/ and .mp3 onto the song name
-	char song[ 14 + strlen( name) + 4];
+	char song[ 14 + strlen( name)];
 //    printf("size: %d\n", strlen(song));
-	extension( song, "./music_library/", name);
+	extension( song, "music_library/", name);
     char songpath[strlen(song)+4];
 	extension( songpath, song, ".mp3");
     printf( "command: %s\n", songpath);
 	
-	char* cmdargv[16];
+	char* cmdargv[3];
 	cmdargv[0] = "mpg123";
 	cmdargv[1] = songpath;
+    cmdargv[2] = NULL;
 	
 	pid_t p;
 	p = fork();
