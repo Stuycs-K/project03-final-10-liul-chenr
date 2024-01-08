@@ -17,7 +17,7 @@ int main(){
 	
 	printf("\nTesting make_playlist\n");
 	char pl[100];
-	make_playlist( pl, "songs.txt");
+	make_playlist( pl, "songs");
 	printf( "playlist %s made\n", pl);
 	
 	printf("\nTesting add_song\n");
@@ -29,8 +29,8 @@ int main(){
 	print_list( list);
 	printf("-------------------------\n");
 
-//	// printf("\nTesting play_song\n");
-//	// play_song( "rubia");
-//	
-//	list = free_list( list);
+	// printf("\nTesting play_song\n");
+	// play_song( "rubia");
+	
+	list = free_list( list);
 }

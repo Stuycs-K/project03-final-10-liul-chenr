@@ -30,7 +30,15 @@ struct song_node* getMP3names(struct song_node* list) {
         
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
-            list = order(list, entry->d_name);
+            char songname[sizeof(entry->d_name) - 3];
+            strncpy(songname, entry->d_name, sizeof(songname) - 1);
+            songname[sizeof(songname) - 1] = '\0';
+
+            // Find and remove the ".mp3"
+            char* rm = strstr(songname, ".mp3");
+            if (rm != NULL) *rm = '\0';
+
+            list = order(list, songname);
         }
     }
     
@@ -109,10 +117,14 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	//inserts the song into the linked list playlist
     p_node = order( p_node, name);
 	struct song_node* newNode = p_node;
-
+    
+    //converts the playlist name to include the .txt extension
+    char pl[ strlen( playlist) + 4];
+    extension( pl, playlist, ".txt");
+    
 	//opens the playlist file
 	// printf( "opening %s\n", playlist);
-	int p_file = open( playlist, O_WRONLY | O_TRUNC, 0644);
+	int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
 	err( p_file, "p_file failed to open");
 	
 	//write the linked list playlist into the playlist file
@@ -131,13 +143,19 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	Creates a text file using the playlist name
 */
 void make_playlist( char* buff, char* playlist){
+    
+    //converts the playlist name to include the .txt extension
+    char pl[ strlen( playlist) + 4];
+    extension( pl, playlist, ".txt");
+    //printf( "%s\n", pl);
 	
 	//create the file using the playlist name
-	int file = open( playlist, O_CREAT | O_EXCL, 0644);
+	int file = open( pl, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
 		
 		//if the file already exist, prompt the user for a new name
 		printf( "playlist already exist\n");
+        printf("choose another name: ");
 		fgets( buff, 99, stdin);
 		buff[ strlen(buff) - 1] = 0;
 		printf( "new name: %s\n", buff);
