@@ -29,13 +29,18 @@ int main(){
 	 list = add_song( list, pl, "rubia");
 	 print_list( list);
 	 printf("-------------------------\n");
+	 
+	 printf("\nTesting remove_song\n");
+	 list = remove_song( list, pl, "rubia");
+	 print_list( list);
+	 printf("-------------------------\n");
 
 //	 printf("\nTesting play_song\n");
 //	 play_song( "da_capo");
 
-	printf("\nTesting play_playlist\n");
-	play_playlist( "songs");
+	// printf("\nTesting play_playlist\n");
+	// play_playlist( "songs");
 	
-	// list = free_list( list);
+	list = free_list( list);
 }
 
