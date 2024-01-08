@@ -185,7 +185,7 @@ void play_song( char* name){
 	
 	char* cmdargv[16];
 	cmdargv[0] = "mpg123";
-	cmdargv[1] = song;
+	cmdargv[1] = songpath;
 	
 	pid_t p;
 	p = fork();
