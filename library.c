@@ -1,5 +1,12 @@
 #include "library.h"
 
+void err(int i, char* message){
+  if( i < 0){
+      printf("Error: %s - %s\n", message, strerror(errno));
+      exit(1);
+  }
+}
+
 void print_list( struct song_node *n){
 	if( n != NULL){
 		printf( "Song: %s\n", n->name);
@@ -10,7 +17,7 @@ void print_list( struct song_node *n){
 /*
 	Takes in a character buffer, a song name, and a file type
 	Concatenates the song name and the file type together
-	ex: extentsion( buff, "everything_i_own", ".mp3") will store "everything_i_own.mp3" in buff
+	ex: extension( buff, "everything_i_own", ".mp3") will store "everything_i_own.mp3" in buff
 */
 void extension( char* buff, char* name, char* type){
 //	strcpy( buff, name);
@@ -276,9 +283,22 @@ struct song_node* free_list( struct song_node *n){
 	return NULL;
 }
 
-void err(int i, char* message){
-  if( i < 0){
-	  printf("Error: %s - %s\n", message, strerror(errno));
-  	exit(1);
-  }
+int genRan() {
+    int random;
+    int r_file=open("/dev/random", O_RDONLY, 0);
+    err(r_file, "open file error");
+    ssize_t rbyte=read(r_file, &random, sizeof(random));
+    err(rbyte, "read error");
+    close(r_file);
+    if (random<0) random *= -1;
+    return random;
+}
+
+struct song_node* shuffle(struct song_node* n){
+    struct song_node *list;
+    list = n;
+    int size = 0;
+    while(n = n->next) {
+        size++;
+    }
 }
