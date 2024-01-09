@@ -31,10 +31,10 @@ int main(){
 	 print_list( pl);
 	 printf("-------------------------\n");
 	 
-//	 printf("\nTesting remove_song\n");
-//	 list = remove_song( list, pl, "rubia");
-//	 print_list( list);
-//	 printf("-------------------------\n");
+	 printf("\nTesting remove_song\n");
+	 pl = remove_song( pl, songs, "rubia");
+	 print_list( pl);
+	 printf("-------------------------\n");
 
 //	 printf("\nTesting play_song\n");
 //	 play_song( "da_capo");

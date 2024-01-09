@@ -132,29 +132,30 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 		printf( "new song: %s\n", buff);
 		add_song( lib, p_node, playlist, buff);
 	}
-	
-	//inserts the song into the linked list playlist
-    p_node = order( p_node, name);
-	struct song_node* newNode = p_node;
-    
-    //converts the playlist name to include the .txt extension
-    char pl[ strlen( playlist) + 4];
-    extension( pl, playlist, ".txt");
-    
-	//opens the playlist file
-	// printf( "opening %s\n", playlist);
-	int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
-	err( p_file, "p_file failed to open");
-	
-	//write the linked list playlist into the playlist file
-	while( newNode != NULL){
-		write( p_file, newNode->name, strlen(newNode->name));
-        write( p_file, "\n", 1);
-		newNode = newNode->next;
+	else{
+		//inserts the song into the linked list playlist
+		p_node = order( p_node, name);
+		struct song_node* newNode = p_node;
+		
+		//converts the playlist name to include the .txt extension
+		char pl[ strlen( playlist) + 4];
+		extension( pl, playlist, ".txt");
+		
+		//opens the playlist file
+		// printf( "opening %s\n", playlist);
+		int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
+		err( p_file, "p_file failed to open");
+		
+		//write the linked list playlist into the playlist file
+		while( newNode != NULL){
+			write( p_file, newNode->name, strlen(newNode->name));
+			write( p_file, "\n", 1);
+			newNode = newNode->next;
+		}
+		
+		close( p_file);
+		return p_node;
 	}
-	
-	close( p_file);
-	return p_node;
 }
 
 /* 
@@ -183,6 +184,7 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 			err( p_file, "p_file failed to open");
 			
 			//write the linked list playlist into the playlist file
+			struct song_node* p = p_node;
 			while( p_node != NULL){
 				write( p_file, p_node->name, strlen( p_node->name));
 				write( p_file, "\n", 1);
@@ -191,7 +193,7 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 			
 			close( p_file);
 					
-			return p_node;
+			return p;
 		}
 		f = remove;
 		remove = remove->next;
