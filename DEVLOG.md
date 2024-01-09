@@ -2,18 +2,21 @@
 
 ## Regina
 
-### 2024-01-04 - Basic implentation (~1 hr)
+### 2024-01-04 - Basic implentation (~1hr)
 -  Convert songs to mp3 files and put them into a folder 
 -  Get the socket and fork from lab16 and modify it a bit (will modify logic later on)
 -  researching on how to install a music player that works on all devices (sox maybe but don't know how to install on lab machine, don't think we can install?)
 
-### 2024-01-05 to 2024-01-07 - Worked on library (~ 3hrs)
+### 2024-01-05 to 2024-01-07 - Worked on library (~3hrs)
 -  Fixed add_song so that it add the song name to the list and then all to a .txt file
 -  Created and fixed getMP3names which takes the .mp3 files and turn them into a list of structs. Took some time to get rid of the .mp3 extension when adding it to the list.
 -  Tested methods
 
-### 2024-01-08 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-08 - Still working on library methods (~2hrs)
+-  Fixed the execvp part of add_song so that it works on macOS by adding a NULL at the end of cmdargv
+-  Added more songs to the music library
+-  Started on the shuffle method which chose a song randomly from a playlist and play it
+-  Still trying to fix getMP3names so that it can add the .mp3 file names into the .txt file "library"
 
 ### 2024-01-09 - Brief description
 Expanded description including how much time was spent on task.

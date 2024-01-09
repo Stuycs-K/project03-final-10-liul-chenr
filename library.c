@@ -181,6 +181,44 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return p_node;
 }
 
+struct song_node* remove_song( struct song_node *p_node, char* playlist, char* name){
+	struct song_node* remove = p_node;
+	struct song_node* f = NULL;
+	
+	while( remove != NULL){
+		if( strcmp( remove->name, name) == 0){
+			if( f == NULL) p_node = p_node->next;
+			else f->next = remove->next;
+			free( remove);
+			
+			// printf( "writing to file\n");
+			//converts the playlist name to include the .txt extension
+			char pl[ strlen( playlist) + 4];
+			extension( pl, playlist, ".txt");
+			
+			//opens the playlist file
+			// printf( "opening %s\n", playlist);
+			int p_file = open( pl, O_WRONLY | O_TRUNC, 0644);
+			err( p_file, "p_file failed to open");
+			
+			//write the linked list playlist into the playlist file
+			while( p_node != NULL){
+				write( p_file, p_node->name, strlen( p_node->name));
+				write( p_file, "\n", 1);
+				p_node = p_node->next;
+			}
+			
+			close( p_file);
+					
+			return p_node;
+		}
+		f = remove;
+		remove = remove->next;
+	}
+	
+	return p_node;
+}
+
 /*
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
@@ -247,6 +285,10 @@ void play_song( char* name){
 	}
 }
 
+/* 
+	Takes in a playlist name
+	Gets each song name in the playlist and plays it
+*/
 void play_playlist( char* playlist){
 	
 	char pl[ strlen( playlist) + 4];
@@ -294,11 +336,24 @@ int genRan() {
     return random;
 }
 
+//chose a random song in the given list
 struct song_node* shuffle(struct song_node* n){
+    if (n == NULL) return NULL;
     struct song_node *list;
     list = n;
-    int size = 0;
-    while(n = n->next) {
+    
+    //get size of list
+    int size = 1;
+    while(n->next != NULL) {
+        n = n->next;
         size++;
     }
+    
+    //chose a random song
+    int random = genRan() % size;
+    for (int i=0; i<random; i++) {
+        list = list->next;
+    }
+    
+    return list;
 }
