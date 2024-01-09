@@ -12,11 +12,11 @@
 -  Created and fixed getMP3names which takes the .mp3 files and turn them into a list of structs. Took some time to get rid of the .mp3 extension when adding it to the list.
 -  Tested methods
 
-### 2024-01-08 - Still working on library methods (~2hrs)
+### 2024-01-08 - Still working on library methods (~2.5hrs)
 -  Fixed the execvp part of add_song so that it works on macOS by adding a NULL at the end of cmdargv
 -  Added more songs to the music library
 -  Started on the shuffle method which chose a song randomly from a playlist and play it
--  Still trying to fix getMP3names so that it can add the .mp3 file names into the .txt file "library"
+-  Fixed getMP3names so that it can add the .mp3 file names into the .txt file "library"
 
 ### 2024-01-09 - Brief description
 Expanded description including how much time was spent on task.
