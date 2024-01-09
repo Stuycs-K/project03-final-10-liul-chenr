@@ -37,12 +37,11 @@ int main(){
 	 printf("-------------------------\n");
 	 
 	 printf("\nTesting shuffle\n");
-	 struct song_node* s;
-	 for( int i = 0; i < 10; i++){
+	 char* s;
+	//  for( int i = 0; i < 10; i++){
 		 s = shuffle( list);
-		 pll = add_song( list, pll, rand, s->name);
-	 }
-	 print_list( pll);
+		 play_song( s);
+	//  }
 	 printf("-------------------------\n");
 
 	//	 printf("\nTesting play_song\n");

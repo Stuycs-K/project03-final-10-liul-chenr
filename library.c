@@ -373,7 +373,7 @@ int genRan() {
 }
 
 //chose a random song in the given list
-struct song_node* shuffle(struct song_node* n){
+char* shuffle(struct song_node* n){
     if (n == NULL) return NULL;
     struct song_node *list;
     list = n;
@@ -391,5 +391,5 @@ struct song_node* shuffle(struct song_node* n){
         list = list->next;
     }
     
-    return list;
+    return list->name;
 }
