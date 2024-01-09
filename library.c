@@ -39,61 +39,6 @@ void term( char* line){
 	}
 }
 
-
-//get the song names of all mp3 in the music library
-struct song_node* getMP3names(struct song_node* list) {
-    DIR * d;
-    char* PATH = "./music_library/";
-    struct dirent *entry;
-    char buff[256];
-    
-    d = opendir(PATH);
-    if (d == NULL) err(errno, "open directory error");
-    
-    char library_playlist[256];
-    make_playlist(library_playlist, "library");
-//    printf("%s created\n", library_playlist);
-    
-    char librarypath[256];
-    snprintf(librarypath, 256, "%s%s", library_playlist, ".txt");
-//    printf("librarypath: %s\n", librarypath);
-    
-    while((entry = readdir( d ))){
-        if (entry->d_type!=4) {
-            char songname[sizeof(entry->d_name) - 3];
-            strncpy(songname, entry->d_name, sizeof(songname) - 1);
-            songname[sizeof(songname) - 1] = '\0';
-
-            // Find and remove the ".mp3"
-            char* rm = strstr(songname, ".mp3");
-            if (rm != NULL) {
-                *rm = '\0';
-                
-                list = order(list, songname);
-                
-                
-                int file = open(librarypath, O_WRONLY | O_APPEND);
-                err(file, "file error");
-                
-                write(file, songname, sizeof(songname));
-                write(file, "\n", 1);
-                close(file);
-            }
-        }
-    }
-    closedir(d);
-    
-    struct song_node* cpylist = list;
-    int file = open(librarypath, O_WRONLY | O_TRUNC);
-    while(cpylist != NULL){
-        write(file, cpylist->name, strlen(cpylist->name));
-        write(file, "\n", 1);
-        cpylist = cpylist->next;
-    }
-    
-    return list;
-}
-
 /*
 	Takes in a linked list, and a song name
 	Creates a linked list with the song name
@@ -158,7 +103,7 @@ struct song_node* order( struct song_node *n, char *name){
 
 /*
 	Takes in a linked list version of the playlist, the name of the playlist, and a song name
-	Add the song to the song_node version of playlist, and then write the whole list to the playlist file
+	Add the song to the linked list version of playlist, and then write the whole list to the playlist file
 	Returns the first node of the linked list
 */
 struct song_node* add_song( struct song_node* p_node, char* playlist, char* name){
@@ -187,6 +132,11 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	return p_node;
 }
 
+/* 
+	Takes in a linked list version of the playlist, the name of the playlist and a song name
+	Removes the song from the linked list version of the playlist, and then writes the whole list to the playlist file
+	Returns the first node of the linked list
+*/
 struct song_node* remove_song( struct song_node *p_node, char* playlist, char* name){
 	struct song_node* remove = p_node;
 	struct song_node* f = NULL;
@@ -254,6 +204,60 @@ void make_playlist( char* buff, char* playlist){
 		strcpy( buff, playlist);
 	
 	close( file);
+}
+
+//get the song names of all mp3 in the music library
+struct song_node* getMP3names(struct song_node* list) {
+    DIR * d;
+    char* PATH = "./music_library/";
+    struct dirent *entry;
+    char buff[256];
+    
+    d = opendir(PATH);
+    if (d == NULL) err(errno, "open directory error");
+    
+    char library_playlist[256];
+    make_playlist(library_playlist, "library");
+//    printf("%s created\n", library_playlist);
+    
+    char librarypath[270];
+    snprintf(librarypath, 270, "%s%s", library_playlist, ".txt");
+//    printf("librarypath: %s\n", librarypath);
+    
+    while((entry = readdir( d ))){
+        if (entry->d_type!=4) {
+            char songname[sizeof(entry->d_name) - 3];
+            strncpy(songname, entry->d_name, sizeof(songname) - 1);
+            songname[sizeof(songname) - 1] = '\0';
+
+            // Find and remove the ".mp3"
+            char* rm = strstr(songname, ".mp3");
+            if (rm != NULL) {
+                *rm = '\0';
+                
+                list = order(list, songname);
+                
+                
+                int file = open(librarypath, O_WRONLY | O_APPEND);
+                err(file, "file error");
+                
+                write(file, songname, sizeof(songname));
+                write(file, "\n", 1);
+                close(file);
+            }
+        }
+    }
+    closedir(d);
+    
+    struct song_node* cpylist = list;
+    int file = open(librarypath, O_WRONLY | O_TRUNC);
+    while(cpylist != NULL){
+        write(file, cpylist->name, strlen(cpylist->name));
+        write(file, "\n", 1);
+        cpylist = cpylist->next;
+    }
+    
+    return list;
 }
 
 /*
