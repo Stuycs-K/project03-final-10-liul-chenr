@@ -23,7 +23,7 @@ void extension( char* buff, char* name, char* type){
 //	strcpy( buff, name);
 //	strcat( buff, type);
     snprintf(buff, 256, "%s%s", name, type);
-    printf("buff: %s\n", buff);
+//    printf("buff: %s\n", buff);
 }
 
 /*
@@ -50,13 +50,13 @@ struct song_node* getMP3names(struct song_node* list) {
     d = opendir(PATH);
     if (d == NULL) err(errno, "open directory error");
     
-    char * library_playlist;
-    make_playlist(library_playlist, "musiclib");
-    printf("%s created\n", library_playlist);
+    char library_playlist[256];
+    make_playlist(library_playlist, "library");
+//    printf("%s created\n", library_playlist);
     
-    char* librarypath;
+    char librarypath[256];
     snprintf(librarypath, 256, "%s%s", library_playlist, ".txt");
-    printf("librarypath: %s\n", librarypath);
+//    printf("librarypath: %s\n", librarypath);
     
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
@@ -70,20 +70,26 @@ struct song_node* getMP3names(struct song_node* list) {
                 *rm = '\0';
                 
                 list = order(list, songname);
-                print_list(list);
                 
-//                printf("library playlist: %s\n", library_playlist);
                 
-                int file = open(librarypath, O_WRONLY);
+                int file = open(librarypath, O_WRONLY | O_APPEND);
                 err(file, "file error");
                 
-                write(file, songname, strlen(songname));
+                write(file, songname, sizeof(songname));
                 write(file, "\n", 1);
                 close(file);
             }
         }
     }
     closedir(d);
+    
+    struct song_node* cpylist = list;
+    int file = open(librarypath, O_WRONLY | O_TRUNC);
+    while(cpylist != NULL){
+        write(file, cpylist->name, strlen(cpylist->name));
+        write(file, "\n", 1);
+        cpylist = cpylist->next;
+    }
     
     return list;
 }
@@ -173,7 +179,7 @@ struct song_node* add_song( struct song_node* p_node, char* playlist, char* name
 	//write the linked list playlist into the playlist file
 	while( newNode != NULL){
 		write( p_file, newNode->name, strlen(newNode->name));
-		 write( p_file, "\n", 1);
+        write( p_file, "\n", 1);
 		newNode = newNode->next;
 	}
 	
