@@ -40,8 +40,11 @@ Expanded description including how much time was spent on task.
 - Created a play_playlist function which takes in a playlist name, reads the file with that name and calls play_song for every line it reads (01/07, ~10 min) 
 - Stack smashing detected while testing play_playlist. play_song also has stack smashing detected. Will work on it Monday (01/07, ~5 min)
 
-### 2024-01-08 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-08 - Worked on remove_song and testing
+- Worked on fixing stack smashing with Regina (~20 min)
+- Created remove_song function which takes in a linked list version of a playlist, playlist name, and song name, removes the song from the linked list and file under the playlist name (~20 min)
+- Added more songs to music_library (~10 min)
+- Tested all library functions (modified add_song to check if a song is in the music library and fixed remove_song) (~20 min)
 
 ### 2024-01-09 - Brief description
 Expanded description including how much time was spent on task.
