@@ -102,11 +102,36 @@ struct song_node* order( struct song_node *n, char *name){
 }
 
 /*
-	Takes in a linked list version of the playlist, the name of the playlist, and a song name
+	Takes in a linked list version of the music_library and a song name
+	Checks if the song is in the music_library
+	Returns 1 if true
+			0 if false
+*/
+int inLibrary( struct song_node* library, char* name){
+	while( library != NULL){
+		if( strcmp( library->name, name) == 0)
+			return 1;
+		library = library->next;
+	}
+	return 0;
+}
+
+/*
+	Takes in a linked list version of the music_library, a linked list version of the playlist, the name of the playlist, and a song name
 	Add the song to the linked list version of playlist, and then write the whole list to the playlist file
 	Returns the first node of the linked list
 */
-struct song_node* add_song( struct song_node* p_node, char* playlist, char* name){
+struct song_node* add_song( struct song_node* lib, struct song_node* p_node, char* playlist, char* name){
+	
+	if( inLibrary( lib, name) == 0){
+		printf( "song not in library\n");
+        printf( "pick another song: ");
+		char buff[100];
+		fgets( buff, 99, stdin);
+		buff[ strlen(buff) - 1] = 0;
+		printf( "new song: %s\n", buff);
+		add_song( lib, p_node, playlist, buff);
+	}
 	
 	//inserts the song into the linked list playlist
     p_node = order( p_node, name);
@@ -189,7 +214,6 @@ void make_playlist( char* buff, char* playlist){
 	//create the file using the playlist name
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
-		
 		//if the file already exist, prompt the user for a new name
 		printf( "playlist already exist\n");
         printf("choose another name: ");
