@@ -26,6 +26,7 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 void make_playlist( char* buff, char* playlist);
 void play_song( char* name);
 void play_playlist( char* playlist);
+struct song_node* shuffle(struct song_node* n);
 
 void err(int i, char* message);	
 #endif

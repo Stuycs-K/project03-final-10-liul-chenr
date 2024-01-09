@@ -35,13 +35,23 @@ int main(){
 	 pl = remove_song( pl, songs, "rubia");
 	 print_list( pl);
 	 printf("-------------------------\n");
+	 
+	 printf("\nTesting shuffle\n");
+	 struct song_node* s;
+	 for( int i = 0; i < 10; i++){
+		 s = shuffle( list);
+		 pll = add_song( list, pll, rand, s->name);
+	 }
+	 print_list( pll);
+	 printf("-------------------------\n");
 
-//	 printf("\nTesting play_song\n");
-//	 play_song( "da_capo");
+	//	 printf("\nTesting play_song\n");
+	//	 play_song( "da_capo");
+	// printf("-------------------------\n");
 
-//	 printf("\nTesting play_playlist\n");
-//	 play_playlist( "songs");
-	
+	//	 printf("\nTesting play_playlist\n");
+	//	 play_playlist( "songs");
+	// printf("-------------------------\n");
 	
 	printf("\nTesting free_list\n");
 	list = free_list( list);
