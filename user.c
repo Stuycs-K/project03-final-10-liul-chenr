@@ -48,6 +48,9 @@ void userLogic(int server_socket){
     list = getMP3names(list);
     print_list(list);
     printf("\n");
+    
+    struct song_node* playlists[5];
+    int iOfplist = 0;
     while(1) {
         char cmd[256];
         printf("Give a command: ");
@@ -71,7 +74,22 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
         }else if(strcmp(cmd, "add song to playlist") == 0) {
+            char * sname;
+            printf("Music Library Songs:\n");
+            print_list(list);
+            printf("give song name: ");
+            fgets(sname, sizeof(sname), stdin);
+            check(sname);
             
+            char* plname;
+            printf("give playlist name: ");
+            fgets(plname, sizeof(plname), stdin);
+            check(plname);
+            
+            struct song_node* plist;
+            add_song(list, plist, plname, sname);
+            playlists[iOfplist] = plist;
+            iOfplist++;
         }
     }
 }
