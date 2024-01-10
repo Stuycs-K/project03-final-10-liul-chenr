@@ -74,19 +74,19 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
         }else if(strcmp(cmd, "add song to playlist") == 0) {
-            char * sname;
+            char sname[100];
             printf("Music Library Songs:\n");
             print_list(list);
             printf("give song name: ");
             fgets(sname, sizeof(sname), stdin);
-            check(sname);
+            printf("sname: %s\n", sname);
             
-            char* plname;
+            char plname[100];
             printf("give playlist name: ");
-            fgets(plname, sizeof(plname), stdin);
-            check(plname);
+            fgets(plname, strlen(plname), stdin);
+            printf("plname: %s\n", plname);
             
-            struct song_node* plist;
+            struct song_node* plist = NULL;
             add_song(list, plist, plname, sname);
             playlists[iOfplist] = plist;
             iOfplist++;
