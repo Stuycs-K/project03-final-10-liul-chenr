@@ -18,8 +18,12 @@
 -  Started on the shuffle method which chose a song randomly from a playlist and play it
 -  Fixed getMP3names so that it can add the .mp3 file names into the .txt file "library"
 
-### 2024-01-09 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-09 - Mainly working on implementing user commands (~2hrs)
+- More bugs with getMP3names when reruning client; fixed
+- Trying to implement signals; was trying to find a way to pause song (still working on it)
+- Subservers and users exchange pid to make sure that they connected
+- Added some commands that user can use, still need further testing
+- Made a method for listing all commands for user reference; type "see commands" into user input
 
 ### 2024-01-10 - Brief description
 Expanded description including how much time was spent on task.
