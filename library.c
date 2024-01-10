@@ -220,7 +220,7 @@ void make_playlist( char* buff, char* playlist){
 		//if the file already exist, prompt the user for a new name
 		printf( "playlist already exist\n");
         printf("choose another name: ");
-		fgets( buff, 99, stdin);
+		fgets( buff, sizeof(buff), stdin);
 		buff[ strlen(buff) - 1] = 0;
 		printf( "new name: %s\n", buff);
 		char nbuff[100];
@@ -235,6 +235,7 @@ void make_playlist( char* buff, char* playlist){
 
 //get the song names of all mp3 in the music library
 struct song_node* getMP3names(struct song_node* list) {
+    remove("library.txt");
     DIR * d;
     char* PATH = "./music_library/";
     struct dirent *entry;
@@ -289,7 +290,7 @@ struct song_node* getMP3names(struct song_node* list) {
 
 /*
 	Takes in a song name
-	Plays the song using mpg123
+	Plays song in library using mpg123
 */
 void play_song( char* name){
 	
