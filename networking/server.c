@@ -1,4 +1,4 @@
-#include "networking.h"
+#include "network.h"
 #include "library.h"
 
 static void sighandler(int signo) {

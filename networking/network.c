@@ -1,11 +1,5 @@
-#include "networking.h"
-
-void err(int i, char *message){
-  if(i < 0){
-      printf("Error: %s - %s\n", message, strerror(errno));
-      exit(1);
-  }
-}
+#include "network.h"
+#include "library.h"
 
 /*Create and bind a socket.
 * Place the socket in a listening state.
