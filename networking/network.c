@@ -80,37 +80,3 @@ int user_tcp_handshake(char * server_address) {
     
     return serverd;
 }
-
-int create_sem(){
-	int semid;
-	semid = semget( KEY, 10, IPC_CREAT | IPC_EXCL | 0644);
-	if( semid == -1){
-		semid = semget( KEY, 10, 0);
-		int v; 
-		for( int i = 0; i < 10; i++){
-			v = semctl( semid, i, GETVAL, 0);
-			printf( "semctl returned (%d): %d\n", i, v);
-		}
-	}
-	else{
-		// printf( "sem created\n");
-		
-		union semun us;
-		us.val = 1;
-		int r;
-		for( int i = 0; i < 10; i++){
-			r = semctl( semid, 0, SETVAL, us);
-			// printf( "semctl returned (%d): %d\n", i, r);
-		}
-	}
-}
-
-int remove_sem(){
-	int semid;
-	semid = semget( KEY, 10, IPC_CREAT | 0644);
-	for( int i = 0; i < 10; i++){
-		semctl( semid, i, IPC_RMID, 0);
-		err( semid, "error removing sem");
-		// printf( "sem (%d) removed\n", i);
-	}
-}

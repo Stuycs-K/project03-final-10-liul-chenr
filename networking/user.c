@@ -4,17 +4,7 @@
 int paused = 0;
 
 static void sighandler(int signo) {
-    if (signo == SIGINT){
-		int semid;
-		semid = semget( KEY, 10, 0);
-		err( semid, "client sigint sem error\n");
-		
-		struct sembuf sb;
-		sb.sem_num = 0;
-		sb.sem_op = 1;
-		semop( semid, &sb, 1);
-		exit(0);
-	}
+    if (signo == SIGINT) exit(0);
 //    if (signo == SIGUSR1) {
 //        if (paused) {
 //
@@ -62,7 +52,6 @@ void userLogic(int server_socket){
     // struct song_node* playlists[5];
     // int iOfplist = 0;
     while(1) {
-		printf( "hehe\n");
         // char cmd[256];
         // printf("Give a command: ");
         // fgets(cmd, sizeof(cmd), stdin);
@@ -116,19 +105,8 @@ int main(int argc, char *argv[] ) {
       IP=argv[1];
     }
     
-	int semid;
-	semid = semget( KEY, 10, 0);
-	err( semid, "client semid err");
-	
-	struct sembuf sb;
-	sb.sem_num = 0;
-	sb.sem_op = -1;
-	
 //    printf("IP: %s\n", IP);
     int server_socket = user_tcp_handshake(IP);
-	
-	semop( semid, &sb, 1);
-	printf( "got the semapore!\n");
     
     userLogic(server_socket);
     close(server_socket);

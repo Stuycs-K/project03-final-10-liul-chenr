@@ -31,6 +31,4 @@ union semun {
     struct seminfo  *__buf;
 };
 
-int create_sem();
-int remove_sem();
 #endif

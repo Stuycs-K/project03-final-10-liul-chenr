@@ -2,10 +2,7 @@
 #include "library.h"
 
 static void sighandler(int signo) {
-    if (signo == SIGINT){
-		remove_sem();
-		exit(0);
-	}
+    if (signo == SIGINT) exit(0);
 }
 
 void rot13(char * str) {
@@ -34,8 +31,7 @@ void subserver_logic(int user_socket){
 
 int main(int argc, char *argv[] ) {
     signal(SIGINT, sighandler);
-    create_sem();
-	
+    	
     int listen_socket = server_setup();
 
     while(1) {
