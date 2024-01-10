@@ -42,21 +42,23 @@ void userLogic(int server_socket){
     int serverpid;
     err(write(server_socket, &pid, sizeof(pid)), "write error");
     err(read(server_socket, &serverpid, sizeof(serverpid)), "read error");
-    printf("User %d connected to subserver %d\n", pid, serverpid);
+    printf("User %d connected to subserver %d\n\n", pid, serverpid);
     printf("Music Library Songs:\n");
     struct song_node* list = NULL;
     list = getMP3names(list);
     print_list(list);
-    printf("\n");
     
     struct song_node* playlists[5];
+    for (int i=0; i<sizeof(playlists); i++) playlists[i]=NULL;
     int iOfplist = 0;
+    
     while(1) {
         char cmd[256];
-        printf("Give a command: ");
+        printf("\nGive a command: ");
         fgets(cmd, sizeof(cmd), stdin);
         check(cmd);
-
+        printf("\n");
+        
         if(strcmp(cmd, "see commands") == 0) {
             command_library();
         }else if(strcmp(cmd, "play song from library") == 0) {
@@ -77,20 +79,23 @@ void userLogic(int server_socket){
             char sname[100];
             printf("Music Library Songs:\n");
             print_list(list);
+            printf("\n");
             printf("give song name: ");
             fgets(sname, sizeof(sname), stdin);
+            check(sname);
             printf("sname: %s\n", sname);
             
             char plname[100];
             printf("give playlist name: ");
-            fgets(plname, strlen(plname), stdin);
+            fgets(plname, sizeof(plname), stdin);
+            check(plname);
             printf("plname: %s\n", plname);
             
-            struct song_node* plist = NULL;
-            add_song(list, plist, plname, sname);
+            struct song_node* plist = playlists[iOfplist];
+            plist = add_song(list, plist, plname, sname);
             playlists[iOfplist] = plist;
             iOfplist++;
-        }
+        }else printf("command not found\n");
     }
 }
 
