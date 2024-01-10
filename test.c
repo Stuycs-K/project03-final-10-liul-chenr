@@ -10,9 +10,8 @@ int main(){
 	printf("-------------------------\n");
 	
 	 printf("\nTesting make_playlist\n");
-	 char songs[100];
 	 struct song_node* pl = NULL;
-	 make_playlist( songs, "songs");
+	 make_playlist("songs");
 	 printf( "playlist %s made\n", songs);
 	 
 	 char rand[100];
