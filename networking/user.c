@@ -4,7 +4,17 @@
 int paused = 0;
 
 static void sighandler(int signo) {
-    if (signo == SIGINT) exit(0);
+    if (signo == SIGINT){
+		int semid;
+		semid = semget( KEY, 10, 0);
+		err( semid, "client sigint sem error\n");
+		
+		struct sembuf sb;
+		sb.sem_num = 0;
+		sb.sem_op = 1;
+		semop( semid, &sb, 1);
+		exit(0);
+	}
 //    if (signo == SIGUSR1) {
 //        if (paused) {
 //
@@ -43,54 +53,55 @@ void userLogic(int server_socket){
     err(write(server_socket, &pid, sizeof(pid)), "write error");
     err(read(server_socket, &serverpid, sizeof(serverpid)), "read error");
     printf("User %d connected to subserver %d\n", pid, serverpid);
-    printf("Music Library Songs:\n");
-    struct song_node* list = NULL;
-    list = getMP3names(list);
-    print_list(list);
-    printf("\n");
+    // printf("Music Library Songs:\n");
+    // struct song_node* list = NULL;
+    // list = getMP3names(list);
+    // print_list(list);
+    // printf("\n");
     
-    struct song_node* playlists[5];
-    int iOfplist = 0;
+    // struct song_node* playlists[5];
+    // int iOfplist = 0;
     while(1) {
-        char cmd[256];
-        printf("Give a command: ");
-        fgets(cmd, sizeof(cmd), stdin);
-        check(cmd);
+		printf( "hehe\n");
+        // char cmd[256];
+        // printf("Give a command: ");
+        // fgets(cmd, sizeof(cmd), stdin);
+        // check(cmd);
 
-        if(strcmp(cmd, "see commands") == 0) {
-            command_library();
-        }else if(strcmp(cmd, "play song from library") == 0) {
-            printf("Music Library Songs:\n");
-            print_list(list);
-            printf("give song name: ");
-            fgets(cmd, sizeof(cmd), stdin);
-            check(cmd);
-            play_song(cmd);
-        }else if(strcmp(cmd, "make playlist") == 0) {
-            printf("give playlist name: ");
-            fgets(cmd, sizeof(cmd), stdin);
-            check(cmd);
+        // if(strcmp(cmd, "see commands") == 0) {
+            // command_library();
+        // }else if(strcmp(cmd, "play song from library") == 0) {
+            // printf("Music Library Songs:\n");
+            // print_list(list);
+            // printf("give song name: ");
+            // fgets(cmd, sizeof(cmd), stdin);
+            // check(cmd);
+            // play_song(cmd);
+        // }else if(strcmp(cmd, "make playlist") == 0) {
+            // printf("give playlist name: ");
+            // fgets(cmd, sizeof(cmd), stdin);
+            // check(cmd);
             
-            char buff[100];
-            make_playlist(buff, cmd);
-        }else if(strcmp(cmd, "add song to playlist") == 0) {
-            char * sname;
-            printf("Music Library Songs:\n");
-            print_list(list);
-            printf("give song name: ");
-            fgets(sname, sizeof(sname), stdin);
-            check(sname);
+            // char buff[100];
+            // make_playlist(buff, cmd);
+        // }else if(strcmp(cmd, "add song to playlist") == 0) {
+            // char * sname;
+            // printf("Music Library Songs:\n");
+            // print_list(list);
+            // printf("give song name: ");
+            // fgets(sname, sizeof(sname), stdin);
+            // check(sname);
             
-            char* plname;
-            printf("give playlist name: ");
-            fgets(plname, sizeof(plname), stdin);
-            check(plname);
+            // char* plname;
+            // printf("give playlist name: ");
+            // fgets(plname, sizeof(plname), stdin);
+            // check(plname);
             
-            struct song_node* plist;
-            add_song(list, plist, plname, sname);
-            playlists[iOfplist] = plist;
-            iOfplist++;
-        }
+            // struct song_node* plist;
+            // add_song(list, plist, plname, sname);
+            // playlists[iOfplist] = plist;
+            // iOfplist++;
+        // }
     }
 }
 
@@ -105,8 +116,19 @@ int main(int argc, char *argv[] ) {
       IP=argv[1];
     }
     
+	int semid;
+	semid = semget( KEY, 10, 0);
+	err( semid, "client semid err");
+	
+	struct sembuf sb;
+	sb.sem_num = 0;
+	sb.sem_op = -1;
+	
 //    printf("IP: %s\n", IP);
     int server_socket = user_tcp_handshake(IP);
+	
+	semop( semid, &sb, 1);
+	printf( "got the semapore!\n");
     
     userLogic(server_socket);
     close(server_socket);

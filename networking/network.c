@@ -93,7 +93,7 @@ int create_sem(){
 		}
 	}
 	else{
-		printf( "sem created\n");
+		// printf( "sem created\n");
 		
 		union semun us;
 		us.val = 1;
