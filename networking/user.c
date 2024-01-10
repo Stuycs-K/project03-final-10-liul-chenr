@@ -18,21 +18,21 @@ void check(char *d) {
 }
 
 void userLogic(int server_socket){
-//    int pid = getpid();
+   int pid = getpid();
     while(1) {
-//        char buff[BUFFER_SIZE];
-//
-//        printf("User %d write to server: ", pid);
-//        fgets(buff, sizeof(buff), stdin);
-//        check(buff);
-//        if (write(server_socket, buff, sizeof(buff)) == -1) {
-//            err(errno, "write error");
-//        }
-//        if (read(server_socket, buff, sizeof(buff)) == 0) {
-////            printf("server exit");
-//            exit(0);
-//        }
-//        printf("User %d read from server: %s\n", pid, buff);
+       char buff[BUFFER_SIZE];
+
+       printf("User %d write to server: ", pid);
+       fgets(buff, sizeof(buff), stdin);
+       check(buff);
+       if (write(server_socket, buff, sizeof(buff)) == -1) {
+           err(errno, "write error");
+       }
+       if (read(server_socket, buff, sizeof(buff)) == 0) {
+//            printf("server exit");
+           exit(0);
+       }
+       printf("User %d read from server: %s\n", pid, buff);
         
         
     }
