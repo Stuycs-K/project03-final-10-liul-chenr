@@ -50,8 +50,10 @@ Expanded description including how much time was spent on task.
 - Added more songs to music_library (~10 min)
 - Tested all library functions (modified add_song to check if a song is in the music library and fixed remove_song) (~20 min)
 
-### 2024-01-09 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-09 - Implementation of semaphores
+- Modified shuffle() to return a string instead of a struct song_node. (~5 min)
+- Discussed with Regina on how to implement music library into a server client format (mainly on how to implement "public playlists") (~20 min)
+- Started implementing semaphores into server.c and client.c, need further testing (~30 min)
 
 ### 2024-01-10 - Brief description
 Expanded description including how much time was spent on task.

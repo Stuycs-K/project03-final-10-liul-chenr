@@ -15,7 +15,6 @@
 #define NETWORKING_H
 #define PORT "19230"
 #define BUFFER_SIZE 1024
-void err(int i, char*message);
 int server_setup();
 int user_tcp_handshake(char*server_address);
 int server_tcp_handshake(int listen_socket);

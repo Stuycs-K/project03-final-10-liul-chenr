@@ -204,6 +204,68 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 }
 
 /*
+	Takes in a playlist name
+	Checks if the playlist exist
+	Returns 1 if true
+			0 if false
+*/
+int isPlaylist( char* playlist){
+	char pl[ strlen( playlist) + 4];
+	extension( pl, playlist, ".txt");
+	
+	int file = open( pl, O_CREAT | O_EXCL, 0644);
+	if( file == -1){
+		close( file);
+		return 1;
+	}
+	
+	close( file);
+	remove( pl);
+	return 0;
+}
+
+void display_playlist(char * playlist) {
+    if(isPlaylist(playlist) == 1) {
+        char buff[256];
+        extension(buff, playlist, ".txt");
+//        printf("buff: %s\n", buff);
+        int file = open(buff, O_RDONLY);
+        
+        char rbyte[256];
+        int bytesRead;
+        bytesRead = read(file, rbyte, sizeof(rbyte));
+        printf("\t%s", rbyte);
+        bytesRead = read(file, rbyte, sizeof(rbyte));
+        printf("\t%s", rbyte);
+//        while((bytesRead = read(file, rbyte, sizeof(rbyte))) > 0) {
+//            rbyte[bytesRead-1] = '\0';
+//            printf("\t%s", rbyte);
+//        }
+        close(file);
+    }else printf("playlist doesn't exist\n");
+}
+
+
+/*
+	Takes in a linked list version of the playlist, and the playlist name
+	Removes the playlist file and frees the linked list associated with the playlist.
+*/
+void remove_playlist( struct song_node* p_node, char* playlist){
+	if( strcmp( playlist, "library") == 0)
+		printf( "library cannot be removed\n");
+	else if( isPlaylist( playlist) == 1){
+		char pl[ strlen( playlist) + 4];
+		extension( pl, playlist, ".txt");
+		
+		remove( pl);
+		free_list( p_node);
+	}
+	else{
+		printf( "%s does not exist\n", playlist);
+	}
+}
+
+/*
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
 */
@@ -217,14 +279,21 @@ void make_playlist( char* buff, char* playlist){
 	//create the file using the playlist name
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
-		//if the file already exist, prompt the user for a new name
-		printf( "playlist already exist\n");
-        printf("choose another name: ");
-		fgets( buff, sizeof(buff), stdin);
-		buff[ strlen(buff) - 1] = 0;
-		printf( "new name: %s\n", buff);
-		char nbuff[100];
-		make_playlist( nbuff, buff);
+		
+		if( strcmp( pl, "library.txt") == 0){
+			printf( "library already exist\n");
+			strcpy( buff, playlist);
+		}
+		else{
+			//if the file already exist, prompt the user for a new name
+			printf( "playlist already exist\n");
+			printf("choose another name: ");
+			fgets( buff, 99, stdin);
+			buff[ strlen(buff) - 1] = 0;
+			printf( "new name: %s\n", buff);
+			char nbuff[100];
+			make_playlist( nbuff, buff);
+		}
 	}
 	else
 		//copy the playlist name into the char buffer
@@ -235,7 +304,6 @@ void make_playlist( char* buff, char* playlist){
 
 //get the song names of all mp3 in the music library
 struct song_node* getMP3names(struct song_node* list) {
-    remove("library.txt");
     DIR * d;
     char* PATH = "./music_library/";
     struct dirent *entry;
@@ -290,7 +358,7 @@ struct song_node* getMP3names(struct song_node* list) {
 
 /*
 	Takes in a song name
-	Plays song in library using mpg123
+	Plays the song using mpg123
 */
 void play_song( char* name){
 	
@@ -375,7 +443,7 @@ int genRan() {
 }
 
 //chose a random song in the given list
-struct song_node* shuffle(struct song_node* n){
+char* shuffle(struct song_node* n){
     if (n == NULL) return NULL;
     struct song_node *list;
     list = n;
@@ -393,5 +461,5 @@ struct song_node* shuffle(struct song_node* n){
         list = list->next;
     }
     
-    return list;
+    return list->name;
 }
