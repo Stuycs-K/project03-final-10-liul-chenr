@@ -51,6 +51,8 @@ void userLogic(int server_socket){
     struct song_node* playlists[5];
     for (int i=0; i<sizeof(playlists); i++) playlists[i]=NULL;
     int iOfplist = 0;
+	char* playlistf[5];
+	int iOfpl = 0;
     
     while(1) {
         char cmd[256];
@@ -72,9 +74,16 @@ void userLogic(int server_socket){
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
+			while( isPlaylist( cmd) == 1){
+				printf( "playlist already exist\n");
+				printf( "please give a new playlist name: ");
+				fgets(cmd, sizeof(cmd), stdin);
+				check(cmd);
+			}
             
             char buff[100];
             make_playlist(buff, cmd);
+			playlistf[ iOfpl++] = buff;
         }else if(strcmp(cmd, "add song to playlist") == 0) {
             char sname[100];
             printf("Music Library Songs:\n");
@@ -84,17 +93,35 @@ void userLogic(int server_socket){
             fgets(sname, sizeof(sname), stdin);
             check(sname);
             printf("sname: %s\n", sname);
+			while( inLibrary( list, sname) == 0){
+				printf( "%s is not in the library\n", sname);
+				printf( "give a new song name: ");
+				fgets(sname, sizeof(sname), stdin);
+				check(sname);
+				printf("sname: %s\n", sname);
+			}
             
             char plname[100];
             printf("give playlist name: ");
             fgets(plname, sizeof(plname), stdin);
             check(plname);
             printf("plname: %s\n", plname);
+			while( isPlaylist( plname) == 0){
+				printf( "%s is not a valid playlist\n", plname);
+				printf( "give a new playlist: ");
+				fgets(plname, sizeof(plname), stdin);
+				check(plname);
+				printf("plname: %s\n", plname);
+			}
+			
+			for( int i = 0; playlistf[i] != NULL; i++){
+				if( strcmp( playlistf[i], plname) == 0)
+					iOfplist = i;
+			}
             
             struct song_node* plist = playlists[iOfplist];
             plist = add_song(list, plist, plname, sname);
             playlists[iOfplist] = plist;
-            iOfplist++;
         }else printf("command not found\n");
     }
 }
