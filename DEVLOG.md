@@ -28,6 +28,15 @@
 ### 2024-01-10 - Brief description
 Expanded description including how much time was spent on task.
 
+### 2024-01-11 - Brief description
+Expanded description including how much time was spent on task.
+
+### 2024-01-12 - Brief description
+Expanded description including how much time was spent on task.
+
+### 2024-01-15 - Brief description
+Expanded description including how much time was spent on task.
+
 ## Lala
 
 ### 2024-01-04 - Started the basic functions of the library (~1 hour)
@@ -55,5 +64,20 @@ Expanded description including how much time was spent on task.
 - Discussed with Regina on how to implement music library into a server client format (mainly on how to implement "public playlists") (~20 min)
 - Started implementing semaphores into server.c and client.c, need further testing (~30 min)
 
-### 2024-01-10 - Brief description
+### 2024-01-10 - Further additions to library.c and modifications to user.c
+- Figured out the issue with "add song to playlist" with Regina on her branch (~30 min)
+- Updated my own branch to match Regina's (~5 min)
+- Made a isPlaylist function to check if a playlist given by the user already exist. (~10 min)
+- Made a remove_playlist function, which removes the playlist file and frees the struct song_node* associated with it. (~10 min)
+- Modified make_playlist so that making library.txt when getMP3names wouldn't prompt the user for a new playlist name. Might be modified again later. (~10 min)
+- Modified "make playlist" so that when a playlist already exist, the user will be prompted for a new playlist. It also adds the name of the playlist to an array that'll keep track of the playlists made. (~10 min)
+- Modified "add song to playlist" using what I discussed with Regina earlier in class. Using the array of playlist names, we can keep track of which index in playlists belong to which playlist. Also added two while loops, one will prompt the user for another song if the song doesn't exist in the library and the other will prompt the user for another playlist if the playlist didn't exist. (~10 min)
+
+### 2024-01-11 - Brief description
+Expanded description including how much time was spent on task.
+
+### 2024-01-12 - Brief description
+Expanded description including how much time was spent on task.
+
+### 2024-01-15 - Brief description
 Expanded description including how much time was spent on task.
