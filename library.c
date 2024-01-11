@@ -203,6 +203,27 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 }
 
 /*
+	Takes in a playlist name
+	Checks if the playlist exist
+	Returns 1 if true
+			0 if false
+*/
+int isPlaylist( char* playlist){
+	char pl[ strlen( playlist) + 4];
+	extension( pl, playlist, ".txt");
+	
+	int file = open( pl, O_CREAT | O_EXCL, 0644);
+	if( file == -1){
+		close( file);
+		return 1;
+	}
+	
+	close( file);
+	remove( pl);
+	return 0;	
+}
+
+/*
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
 */

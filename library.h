@@ -28,5 +28,8 @@ void play_song( char* name);
 void play_playlist( char* playlist);
 char* shuffle(struct song_node* n);
 
+int inLibrary( struct song_node* library, char* name);
+int isPlaylist( char* playlist);
+
 void err(int i, char* message);	
 #endif
