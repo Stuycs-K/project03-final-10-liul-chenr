@@ -31,7 +31,8 @@ void check(char *d) {
 //type "see commands" to get here
 void command_library() {
     printf("List of Commands:\n");
-    printf("\tplay song from library\n");
+    printf("\tplay song\n");
+    printf("\tplay playlist\n");
     printf("\tmake playlist\n");
     printf("\tadd song to playlist\n");
 //    printf("\t\n");
@@ -53,6 +54,8 @@ void userLogic(int server_socket){
     int iOfplist = 0;
 	char* playlistf[5];
 	int iOfpl = 0;
+
+    printf( "\ntype 'see commands' to see the available commands\n");
     
     while(1) {
         char cmd[256];
@@ -63,14 +66,26 @@ void userLogic(int server_socket){
         
         if(strcmp(cmd, "see commands") == 0) {
             command_library();
-        }else if(strcmp(cmd, "play song from library") == 0) {
+        }else if(strcmp(cmd, "play song") == 0) {
             printf("Music Library Songs:\n");
             print_list(list);
             printf("give song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             play_song(cmd);
-        }else if(strcmp(cmd, "make playlist") == 0) {
+        }else if( strcmp( cmd, "play playlist") == 0){
+            printf( "give playlist name: ");
+            fgets( cmd, sizeof( cmd), stdin);
+            check( cmd);
+            while( isPlaylist( cmd) == 0){
+                printf( "playlist does not exist\n");
+                printf( "please give a new playlist: ");
+                fgets( cmd, sizeof( cmd), stdin);
+                check( cmd);
+            }
+            play_playlist( cmd);
+        }
+        else if(strcmp(cmd, "make playlist") == 0) {
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
