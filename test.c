@@ -17,7 +17,7 @@ int main(){
 	 
 	 char rand[100];
 	 struct song_node* pll = NULL;
-	 make_playlist( rand, "library"); //should prompt for a new name; rename random
+	 make_playlist( rand, "songs"); //should prompt for a new name; rename random
 	 printf( "playlist %s made\n", rand);
 	 printf("-------------------------\n");
 	 
@@ -25,7 +25,7 @@ int main(){
 	 int b = isPlaylist( "random");
 	 printf( "random: %d\n", b);
 	 b = isPlaylist( "best songs");
-	 printf( "random: %d\n", b);
+	 printf( "best songs: %d\n", b);
 	 b = isPlaylist( "library");
 	 printf( "library: %d\n", b);
 	 printf("-------------------------\n");
