@@ -224,6 +224,26 @@ int isPlaylist( char* playlist){
 }
 
 /*
+	Takes in a linked list version of the playlist, and the playlist name
+	Removes the playlist file and frees the linked list associated with the playlist.
+*/
+void remove_playlist( struct song_node* p_node, char* playlist){
+	if( strcmp( playlist, "library") == 0)
+		printf( "library cannot be removed\n");
+	
+	if( isPlaylist( playlist) == 1){
+		char pl[ strlen( playlist) + 4];
+		extension( pl, playlist, ".txt");
+		
+		remove( pl);
+		free_list( p_node);
+	}
+	else{
+		printf( "playlist does not exist\n");
+	}
+}
+
+/*
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
 */

@@ -29,6 +29,12 @@ int main(){
 	 b = isPlaylist( "library");
 	 printf( "library: %d\n", b);
 	 printf("-------------------------\n");
+	 
+	 printf( "\nTesting remove_playlist\n");
+	 remove_playlist( list, "library");
+	 remove_playlist( pll, "random");
+	 remove_playlist( pl, "kkjlkfj");
+	 printf("-------------------------\n");
 
 	 printf("\nTesting add_song\n");
 	 pl = add_song( list, pl, songs, "journey_by_the_moonlight");
