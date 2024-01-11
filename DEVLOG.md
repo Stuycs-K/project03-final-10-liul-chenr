@@ -29,6 +29,7 @@
 ### 2024-01-10 - Fixing Mac issue (~3hrs)
 - Mainly trying to fix problem with mac not being able to run some of the methods properly but WSL could; still fixing so that "add song to playlist" command runs properly
 - Added more user commands; added remove playlist to remove the playlist if it exists
+- Tested what we have so far on lab machine; it works, just not on mac for some reason
 
 ### 2024-01-11 - Brief description
 Expanded description including how much time was spent on task.
