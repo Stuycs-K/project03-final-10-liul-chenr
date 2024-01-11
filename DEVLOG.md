@@ -3,7 +3,7 @@
 ## Regina
 
 ### 2024-01-04 - Basic implentation (~1hr)
--  Convert songs to mp3 files and put them into a folder 
+-  Convert songs to mp3 files and put them into a folder called "music_library"
 -  Get the socket and fork from lab16 and modify it a bit (will modify logic later on)
 -  researching on how to install a music player that works on all devices (sox maybe but don't know how to install on lab machine, don't think we can install?)
 
@@ -19,14 +19,16 @@
 -  Fixed getMP3names so that it can add the .mp3 file names into the .txt file "library"
 
 ### 2024-01-09 - Mainly working on implementing user commands (~2hrs)
+- Shuffle works
 - More bugs with getMP3names when reruning client; fixed
 - Trying to implement signals; was trying to find a way to pause song (still working on it)
 - Subservers and users exchange pid to make sure that they connected
 - Added some commands that user can use, still need further testing
 - Made a method for listing all commands for user reference; type "see commands" into user input
 
-### 2024-01-10 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-10 - Fixing Mac issue (~3hrs)
+- Mainly trying to fix problem with mac not being able to run some of the methods properly but WSL could; still fixing so that "add song to playlist" command runs properly
+- Added more user commands; added remove playlist to remove the playlist if it exists
 
 ### 2024-01-11 - Brief description
 Expanded description including how much time was spent on task.
