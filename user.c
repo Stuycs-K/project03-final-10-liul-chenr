@@ -31,7 +31,7 @@ void check(char *d) {
 //type "see commands" to get here
 void command_library() {
     printf("List of Commands:\n");
-    printf("\tplay song from library\n");
+    printf("\tplay song\n");
     printf("\tmake playlist\n");
     printf("\tadd song to playlist\n");
     printf("\tremove playlist\n");
@@ -58,7 +58,7 @@ void userLogic(int server_socket){
 	int iOfpl = 0;
     
     while(1) {
-        list = getMP3names(list);
+        // list = getMP3names(list);
 //        print_list(list);
         char cmd[256];
         printf("\nGive a command: ");
@@ -67,15 +67,20 @@ void userLogic(int server_socket){
         printf("\n");
         
         if(strcmp(cmd, "see commands") == 0) {
+
             command_library();
-        }else if(strcmp(cmd, "play song from library") == 0) {
+
+        }else if(strcmp(cmd, "play song") == 0) {
+
             printf("Music Library Songs:\n");
             print_list(list);
             printf("give song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             play_song(cmd);
+
         }else if(strcmp(cmd, "make playlist") == 0) {
+
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
@@ -89,7 +94,9 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
 			playlistf[ iOfpl++] = buff;
+
         }else if(strcmp(cmd, "add song to playlist") == 0) {
+
             char sname[100];
             printf("Music Library Songs:\n");
             printf("list: %s\n", list->name);
@@ -133,24 +140,26 @@ void userLogic(int server_socket){
             playlists[iOfplist] = plist;
 
         }else if (strcmp(cmd, "remove playlist") == 0) {
+
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             
-            while( isPlaylist( plname) == 0){
-                printf( "%s is not a valid playlist\n", plname);
+            while( isPlaylist( cmd) == 0){
+                printf( "%s is not a valid playlist\n", cmd);
                 printf( "give a new playlist: ");
-                fgets(plname, sizeof(plname), stdin);
-                check(plname);
-                printf("plname: %s\n", plname);
+                fgets(cmd, sizeof(cmd), stdin);
+                check(cmd);
+                printf("plname: %s\n", cmd);
             }
             
             for( int i = 0; playlistf[i] != NULL; i++){
-                if( strcmp( playlistf[i], plname) == 0)
+                if( strcmp( playlistf[i], cmd) == 0)
                     iOfplist = i;
             }
             
             remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
+            
         }else printf("command not found\n");
     }
 }
