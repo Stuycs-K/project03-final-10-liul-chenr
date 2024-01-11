@@ -92,6 +92,13 @@ void userLogic(int server_socket){
             play_playlist( cmd);
         }
         else if(strcmp(cmd, "make playlist") == 0) {
+            char filetype[100];
+            printf( "what kind of playlist would you like to make?\n");
+            printf( "public or private? ");
+            fgets( filetype, sizeof( filetype), stdin);
+            check( filetype);
+            
+
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
