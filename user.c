@@ -34,6 +34,8 @@ void command_library() {
     printf("\tplay song from library\n");
     printf("\tmake playlist\n");
     printf("\tadd song to playlist\n");
+    printf("\tremove playlist\n");
+    printf("\tremove song from playlist\n");
 //    printf("\t\n");
 }
 
@@ -47,6 +49,7 @@ void userLogic(int server_socket){
     struct song_node* list = NULL;
     list = getMP3names(list);
     print_list(list);
+    list = getMP3names(list);
     
     struct song_node* playlists[5];
     for (int i=0; i<sizeof(playlists); i++) playlists[i]=NULL;
@@ -64,6 +67,7 @@ void userLogic(int server_socket){
         }else if(strcmp(cmd, "play song from library") == 0) {
             printf("Music Library Songs:\n");
             print_list(list);
+            list = getMP3names(list);
             printf("give song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
@@ -79,6 +83,7 @@ void userLogic(int server_socket){
             char sname[100];
             printf("Music Library Songs:\n");
             print_list(list);
+            list = getMP3names(list);
             printf("\n");
             printf("give song name: ");
             fgets(sname, sizeof(sname), stdin);
