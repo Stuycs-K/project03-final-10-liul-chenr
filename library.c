@@ -9,7 +9,7 @@ void err(int i, char* message){
 
 void print_list( struct song_node *n){
 	if( n != NULL){
-		printf( "Song: %s\n", n->name);
+		printf( "\t%s\n", n->name);
 		print_list( n->next);
 	}
 }
@@ -156,6 +156,7 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 		close( p_file);
 		return p_node;
 	}
+    return p_node;
 }
 
 /* 
@@ -220,8 +221,30 @@ int isPlaylist( char* playlist){
 	
 	close( file);
 	remove( pl);
-	return 0;	
+	return 0;
 }
+
+void display_playlist(char * playlist) {
+    if(isPlaylist(playlist) == 1) {
+        char buff[256];
+        extension(buff, playlist, ".txt");
+//        printf("buff: %s\n", buff);
+        int file = open(buff, O_RDONLY);
+        
+        char rbyte[256];
+        int bytesRead;
+        bytesRead = read(file, rbyte, sizeof(rbyte));
+        printf("\t%s", rbyte);
+        bytesRead = read(file, rbyte, sizeof(rbyte));
+        printf("\t%s", rbyte);
+//        while((bytesRead = read(file, rbyte, sizeof(rbyte))) > 0) {
+//            rbyte[bytesRead-1] = '\0';
+//            printf("\t%s", rbyte);
+//        }
+        close(file);
+    }else printf("playlist doesn't exist\n");
+}
+
 
 /*
 	Takes in a linked list version of the playlist, and the playlist name
