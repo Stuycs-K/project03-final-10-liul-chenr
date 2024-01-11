@@ -137,6 +137,20 @@ void userLogic(int server_socket){
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             
+            while( isPlaylist( plname) == 0){
+                printf( "%s is not a valid playlist\n", plname);
+                printf( "give a new playlist: ");
+                fgets(plname, sizeof(plname), stdin);
+                check(plname);
+                printf("plname: %s\n", plname);
+            }
+            
+            for( int i = 0; playlistf[i] != NULL; i++){
+                if( strcmp( playlistf[i], plname) == 0)
+                    iOfplist = i;
+            }
+            
+            remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
         }else printf("command not found\n");
     }
 }
