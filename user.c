@@ -31,12 +31,14 @@ void check(char *d) {
 //type "see commands" to get here
 void command_library() {
     printf("List of Commands:\n");
+    printf("\tdisplay library\n");
     printf("\tplay song\n");
     printf("\tplay playlist\n");
     printf("\tmake playlist\n");
     printf("\tadd song to playlist\n");
     printf("\tremove playlist\n");
     printf("\tremove song from playlist\n");
+    printf("\tshuffle\n");
 //    printf("\t\n");
 }
 
@@ -72,6 +74,12 @@ void userLogic(int server_socket){
         if(strcmp(cmd, "see commands") == 0) {
 
             command_library();
+
+        }else if(strcmp(cmd, "display library") == 0) {
+            
+            printf("Music Library Songs:\n");
+            print_list(list);
+            
         }else if(strcmp(cmd, "play song") == 0) {
             printf("Music Library Songs:\n");
             print_list(list);
@@ -105,7 +113,7 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
 			playlistf[ iOfpl++] = buff;
-
+            
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
             char sname[100];
@@ -117,28 +125,28 @@ void userLogic(int server_socket){
             printf("give song name: ");
             fgets(sname, sizeof(sname), stdin);
             check(sname);
-            printf("sname: %s\n", sname);
+//            printf("sname: %s\n", sname);
             
 			while( inLibrary( list, sname) == 0){
 				printf( "%s is not in the library\n", sname);
 				printf( "give a new song name: ");
 				fgets(sname, sizeof(sname), stdin);
 				check(sname);
-				printf("sname: %s\n", sname);
+//				printf("sname: %s\n", sname);
 			}
             
             char plname[100];
             printf("give playlist name: ");
             fgets(plname, sizeof(plname), stdin);
             check(plname);
-            printf("plname: %s\n", plname);
+//            printf("plname: %s\n", plname);
 
 			while( isPlaylist( plname) == 0){
 				printf( "%s is not a valid playlist\n", plname);
 				printf( "give a new playlist: ");
 				fgets(plname, sizeof(plname), stdin);
 				check(plname);
-				printf("plname: %s\n", plname);
+//				printf("plname: %s\n", plname);
 			}
 			
 			for( int i = 0; playlistf[i] != NULL; i++){
@@ -170,6 +178,43 @@ void userLogic(int server_socket){
             }
             
             remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
+            
+        }else if (strcmp(cmd, "remove song from playlist") == 0) {
+
+            char plname[256];
+            printf("give playlist name: ");
+            fgets(plname, sizeof(plname), stdin);
+            check(plname);
+
+            while( isPlaylist( plname) == 0){
+				printf( "%s is not a valid playlist\n", plname);
+				printf( "give a new playlist: ");
+				fgets(plname, sizeof(plname), stdin);
+				check(plname);
+//				printf("plname: %s\n", plname);
+			}
+            
+            for( int i = 0; playlistf[i] != NULL; i++){
+                if( strcmp( playlistf[i], plname) == 0)
+                    iOfplist = i;
+            }
+            
+            struct song_node* plist = playlists[iOfplist];
+            
+            char sname[256];
+            printf("give song name: ");
+            fgets(sname, sizeof(sname), stdin);
+            check(sname);
+
+            while( inLibrary( plist, sname) == 0){
+				printf( "%s is not in the playlist %s\n", sname, plname);
+				printf( "give a new song name: ");
+				fgets(sname, sizeof(sname), stdin);
+				check(sname);
+//				printf("sname: %s\n", sname);
+			}
+            
+            remove_song(plist, plname, sname);
             
         }else printf("command not found\n");
     }
