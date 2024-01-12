@@ -49,7 +49,7 @@ void userLogic(int server_socket){
     err(write(server_socket, &pid, sizeof(pid)), "write error");
     err(read(server_socket, &serverpid, sizeof(serverpid)), "read error");
     printf("User %d connected to subserver %d\n\n", pid, serverpid);
-    printf("music library longs:\n");
+    printf("music library songs:\n");
     struct song_node* list = NULL;
     list = getMP3names(list);
     print_list(list);
@@ -91,6 +91,8 @@ void userLogic(int server_socket){
             printf("give playlist name: ");
             fgets(plname, sizeof(plname), stdin);
             check(plname);
+            
+            if (strcmp(plname, "library") == 0) printlist(list);
 
             while( isPlaylist( plname) == 0){
                 printf( "%s is not a valid playlist\n", plname);
