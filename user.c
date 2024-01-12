@@ -78,10 +78,11 @@ void userLogic(int server_socket){
 
         }else if(strcmp(cmd, "display playlists") == 0) {
             
-            printf("all playlists: ");
+            printf("all playlists:\n");
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
+            printf("\n");
             
         }else if(strcmp(cmd, "display songs in playlist") == 0) {
             
