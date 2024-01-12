@@ -143,8 +143,8 @@ void userLogic(int server_socket){
             
             char buff[100];
             make_playlist(buff, cmd);
-		printf("playlist '%s' created\n", cmd);
-		playlistf[ iOfpl++] = buff;
+            printf("playlist '%s' created\n", cmd);
+            playlistf[ iOfpl++] = buff;
             
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
@@ -189,7 +189,7 @@ void userLogic(int server_socket){
             struct song_node* plist = playlists[iOfplist];
             plist = add_song(list, plist, plname, sname);
             printf("song '%s' added to playlist '%s'\n", sname, plname);
-		playlists[iOfplist] = plist;
+            playlists[iOfplist] = plist;
 
         }else if (strcmp(cmd, "remove playlist") == 0) {
 
@@ -211,13 +211,14 @@ void userLogic(int server_socket){
             }
             
             remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
-		printf("playlist '%s' removed\n", cmd);
+            printf("playlist '%s' removed\n", cmd);
             for(int i = iOfplist; i < plSize - 1; i++) {
                 playlistf[i] = playlistf[i + 1];
                 playlists[i] = playlists[i + 1];
             }
             playlistf[plSize - 1] = NULL;
             playlists[plSize - 1] = NULL;
+            iOfpl--;
             
         }else if (strcmp(cmd, "remove song from playlist") == 0) {
 
@@ -255,7 +256,7 @@ void userLogic(int server_socket){
 			}
             
             remove_song(plist, plname, sname);
-		printf("song '%s' removed from playlist '%s'\n", sname, plname);
+            printf("song '%s' removed from playlist '%s'\n", sname, plname);
             
         }else if (strcmp(cmd, "shuffle") == 0) {
             
@@ -265,8 +266,8 @@ void userLogic(int server_socket){
             check(plname);
             
             if (strcmp(plname, "library") == 0) {
-		char* s = shuffle(list);
-		play_song(s);
+                char* s = shuffle(list);
+                play_song(s);
             }else {
                 while( isPlaylist( plname) == 0){
                     printf( "%s is not a valid playlist\n", plname);
@@ -282,7 +283,7 @@ void userLogic(int server_socket){
                 }
                 
                 char* s = shuffle(playlists[iOfplist]);
-		play_song(s);
+                play_song(s);
             }
             
         }else printf("command not found\n");
