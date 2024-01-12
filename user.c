@@ -37,7 +37,7 @@ void command_library() {
     printf("\tplay playlist\n"); //done
     printf("\tmake playlist\n"); //done
     printf("\tadd song to playlist\n"); //done
-    printf("\tremove playlist\n"); //done
+    printf("\tremove playlist\n"); //modified, need testing
     printf("\tremove song from playlist\n"); //done
     printf("\tshuffle\n"); //need testing
 //    printf("\t\n");
@@ -59,6 +59,7 @@ void userLogic(int server_socket){
     int iOfplist = 0;
 
 	char* playlistf[5];
+    int plSize = 5;
 	int iOfpl = 0;
 
     printf( "\ntype 'see commands' to see the available commands\n");
@@ -79,6 +80,7 @@ void userLogic(int server_socket){
         }else if(strcmp(cmd, "display playlists") == 0) {
             
             printf("all playlists:\n");
+            printf("\tlibrary\n");
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
@@ -105,7 +107,7 @@ void userLogic(int server_socket){
             
             struct song_node* plist = playlists[iOfplist];
             printf("%s songs:\n", plname);
-            print_list(list);
+            print_list(plist);
             
         }else if(strcmp(cmd, "play song") == 0) {
             
@@ -209,6 +211,12 @@ void userLogic(int server_socket){
             }
             
             remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
+            for(int i = iOfplist; i < plSize - 1; i++) {
+                playlistf[i] = playlistf[i + 1];
+                playlists[i] = playlists[i + 1];
+            }
+            playlistf[plSize - 1] = NULL;
+            playlists[plSize - 1] = NULL;
             
         }else if (strcmp(cmd, "remove song from playlist") == 0) {
 
