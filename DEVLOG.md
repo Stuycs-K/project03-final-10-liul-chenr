@@ -31,11 +31,11 @@
 - Added more user commands; added remove playlist to remove the playlist if it exists
 - Tested what we have so far on lab machine; it works, just not on mac for some reason
 
-### 2024-01-11 - Adding more commands (~2.5hrs)
-- Added display playlists command which displays all the playlist including library; still need testing
+### 2024-01-11 - Adding more commands (~3hrs)
+- Added display playlists command which displays all the playlist including library
 - Added shuffle command which asks user for a playlist and chose a random song in it to play
-- Modified some of the other commands so that the playlists and playlistf array works as expected; still need testing
-- Testing everything on lab machine
+- Modified some of the other commands so that the playlists and playlistf array works as expected; all existing commands works now
+- Tested every command on lab machine; works
 
 ### 2024-01-12 - Brief description
 Expanded description including how much time was spent on task.
