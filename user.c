@@ -188,8 +188,15 @@ void userLogic(int server_socket){
 				check(sname);
 				printf("sname: %s\n", sname);
 			}
-
-            remove_song();
+            
+            for( int i = 0; playlistf[i] != NULL; i++){
+                if( strcmp( playlistf[i], plname) == 0)
+                    iOfplist = i;
+            }
+            
+            struct song_node* plist = playlists[iOfplist];
+            remove_song(plist, plname, sname);
+            
         }else printf("command not found\n");
     }
 }
