@@ -11,7 +11,7 @@ static void sighandler(int signo) {
 	}
 }
 
-void subserver_logic(int user_socket, int* p_arry){
+void subserver_logic(int user_socket, fd_set read_fds, int* p_arry){
     int pid = getpid();
     int ibuff;
     err(read(user_socket, &ibuff, sizeof(ibuff)), "read error");
@@ -21,11 +21,13 @@ void subserver_logic(int user_socket, int* p_arry){
 	int fifo = open( ".p_pipe", O_WRONLY);
 	err( fifo, "error opening p_pipe");
     
-    char buff[BUFFER_SIZE];
-    while((read(user_socket, buff, strlen(buff))) > 0) {
-        printf( "from %d: %s\n", ibuff, buff);
-		write( fifo, buff, strlen( buff));
-    }
+	if( FD_ISSET( fifo, &read_fds)){
+		char buff[BUFFER_SIZE];
+		while((read(user_socket, buff, strlen(buff))) > 0) {
+			printf( "from %d: %s\n", ibuff, buff);
+			write( fifo, buff, strlen( buff));
+		}
+	}
 	close( fifo);
 }
 
@@ -34,6 +36,7 @@ int main(int argc, char *argv[] ) {
     
     int listen_socket = server_setup();
 	
+	fd_set read_fds;
 	int p_arry[10][2];
 	for( int i = 0; i < 10; i++){
 		pipe( p_arry[i]);
@@ -47,20 +50,31 @@ int main(int argc, char *argv[] ) {
 	err( fifo, "error opening p_pipe");
 
     while(1) {
+		
+		FD_ZERO( &read_fds);
+		for( int i = 0; i < 10; i++){
+			FD_SET( p_arry[i][READ], &read_fds);
+			FD_SET( p_arry[i][WRITE], &read_fds);
+		}
+		FD_SET( fifo, &read_fds);
+		int i = select( fifo + 1, &read_fds, NULL, NULL, NULL);
+		
         int user_socket = server_tcp_handshake(listen_socket);
 
         int f = fork();
         if (f == 0) {
-            subserver_logic( user_socket, p_arry[usr++]);
+            subserver_logic( user_socket, read_fds, p_arry[usr++]);
             close(user_socket);
             exit(0);
         }else if (f > 0) {
             close(user_socket);
 			
-			char buff[ BUFFER_SIZE];
-			read( fifo, buff, sizeof( buff));
-			printf( "from child: %s\n", buff);
-			close( fifo);
+			if( FD_ISSET( fifo, &read_fds)){
+				char buff[ BUFFER_SIZE];
+				read( fifo, buff, sizeof( buff));
+				printf( "from child: %s\n", buff);
+				close( fifo);
+			}
         }else err(errno, "forking error");
     }
 }
