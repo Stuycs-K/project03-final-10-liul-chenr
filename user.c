@@ -262,21 +262,23 @@ void userLogic(int server_socket){
             fgets(plname, sizeof(plname), stdin);
             check(plname);
             
-            while( isPlaylist( plname) == 0){
-                printf( "%s is not a valid playlist\n", plname);
-                printf( "give a new playlist: ");
-                fgets(plname, sizeof(plname), stdin);
-                check(plname);
-//                printf("plname: %s\n", plname);
+            if (strcmp(plname, "library") shuffle(list);
+            else {
+                while( isPlaylist( plname) == 0){
+                    printf( "%s is not a valid playlist\n", plname);
+                    printf( "give a new playlist: ");
+                    fgets(plname, sizeof(plname), stdin);
+                    check(plname);
+//                    printf("plname: %s\n", plname);
+                }
+                
+                for( int i = 0; playlistf[i] != NULL; i++){
+                    if( strcmp( playlistf[i], plname) == 0)
+                        iOfplist = i;
+                }
+                
+                shuffle(playlists[iOfplist]);
             }
-            
-            for( int i = 0; playlistf[i] != NULL; i++){
-                if( strcmp( playlistf[i], plname) == 0)
-                    iOfplist = i;
-            }
-            
-            struct song_node* plist = playlists[iOfplist];
-            shuffle(plist);
             
         }else printf("command not found\n");
     }
