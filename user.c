@@ -31,15 +31,15 @@ void check(char *d) {
 //type "see commands" to get here
 void command_library() {
     printf("List of Commands:\n");
-    printf("\tdisplay playlists\n"); //need testing
-    printf("\tdisplay songs in playlist\n"); //need testing
+    printf("\tdisplay playlists\n"); //done
+    printf("\tdisplay songs in playlist\n"); //done
     printf("\tplay song\n"); //done
     printf("\tplay playlist\n"); //done
-    printf("\tmake playlist\n"); //done
+    printf("\tcreate playlist\n"); //done
     printf("\tadd song to playlist\n"); //done
     printf("\tremove playlist\n"); //modified, need testing
     printf("\tremove song from playlist\n"); //done
-    printf("\tshuffle\n"); //need testing
+    printf("\tshuffle\n"); //done
 //    printf("\t\n");
 }
 
@@ -129,7 +129,7 @@ void userLogic(int server_socket){
             }
             play_playlist( cmd);
             
-        }else if(strcmp(cmd, "make playlist") == 0) {
+        }else if(strcmp(cmd, "create playlist") == 0) {
             
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
@@ -143,7 +143,8 @@ void userLogic(int server_socket){
             
             char buff[100];
             make_playlist(buff, cmd);
-			playlistf[ iOfpl++] = buff;
+		printf("playlist '%s' created\n", cmd);
+		playlistf[ iOfpl++] = buff;
             
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
@@ -187,7 +188,8 @@ void userLogic(int server_socket){
             
             struct song_node* plist = playlists[iOfplist];
             plist = add_song(list, plist, plname, sname);
-            playlists[iOfplist] = plist;
+            printf("song '%s' added to playlist '%s'\n", sname, plname);
+		playlists[iOfplist] = plist;
 
         }else if (strcmp(cmd, "remove playlist") == 0) {
 
@@ -209,6 +211,7 @@ void userLogic(int server_socket){
             }
             
             remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
+		printf("playlist '%s' removed\n", cmd);
             for(int i = iOfplist; i < plSize - 1; i++) {
                 playlistf[i] = playlistf[i + 1];
                 playlists[i] = playlists[i + 1];
@@ -252,6 +255,7 @@ void userLogic(int server_socket){
 			}
             
             remove_song(plist, plname, sname);
+		printf("song '%s' removed from playlist '%s'\n", sname, plname);
             
         }else if (strcmp(cmd, "shuffle") == 0) {
             
