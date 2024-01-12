@@ -61,14 +61,13 @@ void userLogic(int server_socket){
 	char* playlistf[5];
     int plSize = 5;
 	int iOfpl = 0;
-
-    printf( "\ntype 'see commands' to see the available commands\n");
-    
+	
     while(1) {
         // list = getMP3names(list);
 //        print_list(list);
         char cmd[256];
-        printf("\nGive a command: ");
+	printf( "\ntype 'see commands' to see the available commands\n");
+        printf("give a command: ");
         fgets(cmd, sizeof(cmd), stdin);
         check(cmd);
         printf("\n");
@@ -84,7 +83,6 @@ void userLogic(int server_socket){
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
-            printf("\n");
             
         }else if(strcmp(cmd, "display songs in playlist") == 0) {
             
@@ -106,7 +104,7 @@ void userLogic(int server_socket){
             }
             
             struct song_node* plist = playlists[iOfplist];
-            printf("%s songs:\n", plname);
+            printf("\n%s songs:\n", plname);
             print_list(plist);
             
         }else if(strcmp(cmd, "play song") == 0) {
@@ -262,8 +260,10 @@ void userLogic(int server_socket){
             fgets(plname, sizeof(plname), stdin);
             check(plname);
             
-            if (strcmp(plname, "library") shuffle(list);
-            else {
+            if (strcmp(plname, "library") == 0) {
+		char* s = shuffle(list);
+		play_song(s);
+            }else {
                 while( isPlaylist( plname) == 0){
                     printf( "%s is not a valid playlist\n", plname);
                     printf( "give a new playlist: ");
@@ -277,7 +277,8 @@ void userLogic(int server_socket){
                         iOfplist = i;
                 }
                 
-                shuffle(playlists[iOfplist]);
+                char* s = shuffle(playlists[iOfplist]);
+		play_song(s);
             }
             
         }else printf("command not found\n");
