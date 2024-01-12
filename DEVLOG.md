@@ -31,8 +31,11 @@
 - Added more user commands; added remove playlist to remove the playlist if it exists
 - Tested what we have so far on lab machine; it works, just not on mac for some reason
 
-### 2024-01-11 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-11 - Adding more commands (~2.5hrs)
+- Added display playlists command which displays all the playlist including library; still need testing
+- Added shuffle command which asks user for a playlist and chose a random song in it to play
+- Modified some of the other commands so that the playlists and playlistf array works as expected; still need testing
+- Testing everything on lab machine
 
 ### 2024-01-12 - Brief description
 Expanded description including how much time was spent on task.
@@ -76,8 +79,10 @@ Expanded description including how much time was spent on task.
 - Modified "make playlist" so that when a playlist already exist, the user will be prompted for a new playlist. It also adds the name of the playlist to an array that'll keep track of the playlists made. (~10 min)
 - Modified "add song to playlist" using what I discussed with Regina earlier in class. Using the array of playlist names, we can keep track of which index in playlists belong to which playlist. Also added two while loops, one will prompt the user for another song if the song doesn't exist in the library and the other will prompt the user for another playlist if the playlist didn't exist. (~10 min)
 
-### 2024-01-11 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-11 - Pipes and select
+- Added "play playlist" into user.c. (~10 min)
+- Modified "make playlist" to ask the user if they want to make a public or private playlist. The name of the playlist getting made is then sent to the server. (~5 min)
+- Working on implementing pipes between the server and its subservers using select. For "public playlists" we want the user to send the name of the playlist (and any songs they add to it) to the subserver connected to it. Then the subserver will send the playlist to the main server, which will then keep track of each public playlist each user makes. The server is then supposed to send the information about each playlist to the other subservers, which would then send the information to their users. Work in progress, I'm trying to figure out how select works with pipes. (~1 hour)
 
 ### 2024-01-12 - Brief description
 Expanded description including how much time was spent on task.
