@@ -81,7 +81,8 @@ void userLogic(int server_socket){
             printf("all playlists:\n");
             printf("\tlibrary\n");
             for( int i = 0; playlistf[i] != NULL; i++){
-                printf("\t%s\n", playlistf[i]);
+                
+                printf("\t%d: %s\n", i, playlistf[i]);
             }
             
         }else if(strcmp(cmd, "display songs in playlist") == 0) {
@@ -144,7 +145,9 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
             printf("playlist '%s' created\n", cmd);
+            printf("iOfpl: %d\n", iOfpl);
             playlistf[ iOfpl++] = buff;
+            printf("iOfpl: %d\n", iOfpl);
             
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
