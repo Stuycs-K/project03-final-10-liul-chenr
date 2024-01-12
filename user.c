@@ -31,8 +31,8 @@ void check(char *d) {
 //type "see commands" to get here
 void command_library() {
     printf("List of Commands:\n");
-    printf("\tdisplay music library\n"); //done
-    printf("\tdisplay playlist\n"); //need testing
+    printf("\tdisplay playlists\n"); //need testing
+    printf("\tdisplay songs in playlist\n"); //need testing
     printf("\tplay song\n"); //done
     printf("\tplay playlist\n"); //done
     printf("\tmake playlist\n"); //done
@@ -76,12 +76,14 @@ void userLogic(int server_socket){
 
             command_library();
 
-        }else if(strcmp(cmd, "display music library") == 0) {
+        }else if(strcmp(cmd, "display playlists") == 0) {
             
-            printf("music library songs:\n");
-            print_list(list);
+            printf("all playlists: ");
+            for( int i = 0; playlistf[i] != NULL; i++){
+                printf("\t%s\n"playlistf[i]);
+            }
             
-        }else if(strcmp(cmd, "display playlist") == 0) {
+        }else if(strcmp(cmd, "display songs in playlist") == 0) {
             
             char plname[100];
             printf("give playlist name: ");
