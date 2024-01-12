@@ -92,24 +92,24 @@ void userLogic(int server_socket){
             fgets(plname, sizeof(plname), stdin);
             check(plname);
             
-            if (strcmp(plname, "library") == 0) printlist(list);
-
-            while( isPlaylist( plname) == 0){
-                printf( "%s is not a valid playlist\n", plname);
-                printf( "give a new playlist: ");
-                fgets(plname, sizeof(plname), stdin);
-                check(plname);
+            if (strcmp(plname, "library") == 0) print_list(list);
+		else {
+            	while( isPlaylist( plname) == 0){
+                	printf( "%s is not a valid playlist\n", plname);
+                	printf( "give a new playlist: ");
+                	fgets(plname, sizeof(plname), stdin);
+                	check(plname);
+            	}
+            	
+            	for( int i = 0; playlistf[i] != NULL; i++){
+                	if( strcmp( playlistf[i], plname) == 0)
+                	    iOfplist = i;
+            	}
+            	
+            	struct song_node* plist = playlists[iOfplist];
+            	printf("\n%s songs:\n", plname);
+            	print_list(plist);
             }
-            
-            for( int i = 0; playlistf[i] != NULL; i++){
-                if( strcmp( playlistf[i], plname) == 0)
-                    iOfplist = i;
-            }
-            
-            struct song_node* plist = playlists[iOfplist];
-            printf("\n%s songs:\n", plname);
-            print_list(plist);
-            
         }else if(strcmp(cmd, "play song") == 0) {
             
             printf("music library songs:\n");
