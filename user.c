@@ -80,7 +80,7 @@ void userLogic(int server_socket){
             
             printf("all playlists: ");
             for( int i = 0; playlistf[i] != NULL; i++){
-                printf("\t%s\n"playlistf[i]);
+                printf("\t%s\n", playlistf[i]);
             }
             
         }else if(strcmp(cmd, "display songs in playlist") == 0) {
@@ -110,7 +110,7 @@ void userLogic(int server_socket){
             
             printf("music library songs:\n");
             print_list(list);
-            printf("give song name: ");
+            printf("\ngive song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             play_song(cmd);
