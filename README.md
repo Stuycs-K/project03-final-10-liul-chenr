@@ -35,7 +35,7 @@ List of commands:
 - display playlists: show all avaliable playlists (including 'library' and any playlists created by user)
 - display songs in playlist: user gives a playlist from the list of playlists and it will show all songs in that playlist
 - play song: user chose a song from the list given and terminal will play it (press 'q' to exit song)
-- play playlist: user chose a playlist from the list given and terminal will play through all the songs in it alphabetically ((press 'q' to go to next song)
+- play playlist: user chose a playlist from the list given and terminal will play through all the songs in it alphabetically (press 'q' to go to next song)
 - create playlist: user input a new playlist name and it creates an empty playlist with that given name
 - add song to playlist: user chose a playlist and gives a song name from the music library and it will add that song to the chosen playlist (note: if playlist or song name doesn't exist, it will ask user to input another name)
 - remove playlist: user inputs a playlist name and it removes that playlist (it doesn't do anything if playlist doesn't exist)
