@@ -7,18 +7,6 @@ void err(int i, char* message){
   }
 }
 
-void resize(struct song_node* list, char* names, int original_size) {
-    
-    struct song_node* newlist[original_size*2];
-    for (int i=0; i<sizeof(playlists); i++) newlist[i]=NULL;
-    
-    char* names[original_size*2];
-    for (int i=0; i<sizeof(names); i++) names[i]=NULL;
-    
-    
-
-}
-
 void print_list( struct song_node *n){
 	if( n != NULL){
 		printf( "\t%s\n", n->name);
@@ -360,7 +348,7 @@ void play_song( char* name){
 	extension( song, "music_library/", name);
     char songpath[strlen(song)+4];
 	extension( songpath, song, ".mp3");
-    printf( "command: %s\n", songpath);
+//    printf( "command: %s\n", songpath);
 	
 	char* cmdargv[3];
 	cmdargv[0] = "mpg123";
