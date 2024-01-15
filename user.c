@@ -136,14 +136,14 @@ void userLogic(int server_socket){
             }
             
         }else if(strcmp(cmd, "play song") == 0) {
-
+            
             printf("music library songs:\n");
             print_list(list);
             printf("\ngive song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             play_song(cmd);
-
+            
         }else if( strcmp( cmd, "play playlist") == 0){
             
             printf("all playlists:\n");
@@ -154,7 +154,6 @@ void userLogic(int server_socket){
             printf( "\ngive playlist name: ");
             fgets( cmd, sizeof( cmd), stdin);
             check( cmd);
-			
             while( isPlaylist( cmd) == 0){
                 printf( "playlist does not exist\n");
                 printf( "please give a new playlist: ");
@@ -162,7 +161,7 @@ void userLogic(int server_socket){
                 check( cmd);
             }
             play_playlist( cmd);
-
+            
         }else if(strcmp(cmd, "create playlist") == 0) {
             
             printf("all playlists:\n");
@@ -173,7 +172,6 @@ void userLogic(int server_socket){
             printf("\ngive playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
-			
 			while( isPlaylist( cmd) == 1){
 				printf( "playlist already exist\n");
                 sleep(1);
