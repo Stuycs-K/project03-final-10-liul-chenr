@@ -136,13 +136,19 @@ void userLogic(int server_socket){
             }
             
         }else if(strcmp(cmd, "play song") == 0) {
+<<<<<<< HEAD
             
             printf("music library songs:\n");
+=======
+			
+            printf("Music Library Songs:\n");
+>>>>>>> lala
             print_list(list);
             printf("\ngive song name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             play_song(cmd);
+<<<<<<< HEAD
             
         }else if( strcmp( cmd, "play playlist") == 0){
             
@@ -152,8 +158,15 @@ void userLogic(int server_socket){
                 printf("\t%s\n", playlistf[i]);
             }
             printf( "\ngive playlist name: ");
+=======
+			
+        }else if( strcmp( cmd, "play playlist") == 0){
+			
+            printf( "give playlist name: ");
+>>>>>>> lala
             fgets( cmd, sizeof( cmd), stdin);
             check( cmd);
+			
             while( isPlaylist( cmd) == 0){
                 printf( "playlist does not exist\n");
                 printf( "please give a new playlist: ");
@@ -161,6 +174,7 @@ void userLogic(int server_socket){
                 check( cmd);
             }
             play_playlist( cmd);
+<<<<<<< HEAD
             
         }else if(strcmp(cmd, "create playlist") == 0) {
             
@@ -170,8 +184,21 @@ void userLogic(int server_socket){
                 printf("\t%s\n", playlistf[i]);
             }
             printf("\ngive playlist name: ");
+=======
+			
+        }else if(strcmp(cmd, "make playlist") == 0) {
+			
+            char filetype[100];
+            printf( "what kind of playlist would you like to make?\n");
+            printf( "public or private? ");
+            fgets( filetype, sizeof( filetype), stdin);
+            check( filetype);
+
+            printf("give playlist name: ");
+>>>>>>> lala
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
+			
 			while( isPlaylist( cmd) == 1){
 				printf( "playlist already exist\n");
                 sleep(1);
@@ -188,8 +215,17 @@ void userLogic(int server_socket){
             if (iOfpl == (plSize - 1)) resize();
             char buff[100];
             make_playlist(buff, cmd);
+<<<<<<< HEAD
             printf("playlist '%s' created\n", cmd);
             playlistf[ iOfpl++] = strdup(buff);
+=======
+			playlistf[ iOfpl++] = buff;
+			
+			if( strcmp( filetype, "public") == 0){
+				printf( "public playlist made\n");
+				err( write( server_socket, cmd, strlen( cmd)), "error writing to server");
+			}
+>>>>>>> lala
             
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
