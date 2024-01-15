@@ -346,7 +346,7 @@ struct song_node* getMP3names(struct song_node* list) {
     closedir(d);
     
     struct song_node* cpylist = list;
-    int file = open(librarypath, O_WRONLY | O_TRUNC);
+    file = open(librarypath, O_WRONLY | O_TRUNC);
     while(cpylist != NULL){
         write(file, cpylist->name, strlen(cpylist->name));
         write(file, "\n", 1);
