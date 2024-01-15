@@ -18,7 +18,7 @@ struct song_node {
     struct song_node *next;
 	};
 
-struct song_node* getMP3names(struct song_node* list);
+struct song_node* getMP3names();
 void print_list( struct song_node *n);
 void display_playlist(char * playlist);
 struct song_node* free_list( struct song_node *n);

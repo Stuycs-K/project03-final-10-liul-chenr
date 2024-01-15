@@ -4,7 +4,7 @@ int main(){
 
 //	printf("\nMaking library file\n");
 	struct song_node* list = NULL;
-	list = getMP3names(list);
+	list = getMP3names();
 //    print_list(list);
     display_playlist("library");
 //	printf("printing...\n");

@@ -235,12 +235,10 @@ void display_playlist(char * playlist) {
         int bytesRead;
         bytesRead = read(file, rbyte, sizeof(rbyte));
         printf("\t%s", rbyte);
-        bytesRead = read(file, rbyte, sizeof(rbyte));
-        printf("\t%s", rbyte);
-//        while((bytesRead = read(file, rbyte, sizeof(rbyte))) > 0) {
-//            rbyte[bytesRead-1] = '\0';
-//            printf("\t%s", rbyte);
-//        }
+        while((bytesRead = read(file, rbyte, sizeof(rbyte))) > 0) {
+            rbyte[bytesRead-1] = '\0';
+            printf("\t%s", rbyte);
+        }
         close(file);
     }else printf("playlist doesn't exist\n");
 }
@@ -275,50 +273,34 @@ void make_playlist( char* buff, char* playlist){
     char pl[ strlen( playlist) + 4];
     extension( pl, playlist, ".txt");
     //printf( "%s\n", pl);
-	
+    
 	//create the file using the playlist name
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
-	if( file == -1){
-		
-		if( strcmp( pl, "library.txt") == 0){
-			printf( "library already exist\n");
-			strcpy( buff, playlist);
-		}
-		else{
-			//if the file already exist, prompt the user for a new name
-			printf( "playlist already exist\n");
-			printf("choose another name: ");
-			fgets( buff, 99, stdin);
-			buff[ strlen(buff) - 1] = 0;
-			printf( "new name: %s\n", buff);
-			char nbuff[100];
-			make_playlist( nbuff, buff);
-		}
-	}
-	else
-		//copy the playlist name into the char buffer
-		strcpy( buff, playlist);
+    err(file, "open file error");
+    //copy the playlist name into the char buffer
+    strcpy( buff, playlist);
 	
 	close( file);
 }
 
 //get the song names of all mp3 in the music library
-struct song_node* getMP3names(struct song_node* list) {
+struct song_node* getMP3names() {
     DIR * d;
     char* PATH = "./music_library/";
     struct dirent *entry;
     char buff[256];
+    struct song_node* list;
+    list = NULL;
     
     d = opendir(PATH);
     if (d == NULL) err(errno, "open directory error");
     
-    int file = open( pl, O_CREAT | O_EXCL, 0644);
-    err(file, "open file error");
-//    printf("%s created\n", library_playlist);
-    
-    char librarypath[270];
-    snprintf(librarypath, 270, "%s%s", "library", ".txt");
+    char librarypath[270] = "library.txt";
 //    printf("librarypath: %s\n", librarypath);
+    
+    int file = open( librarypath, O_CREAT | O_TRUNC, 0644);
+    err(file, "open file error");
+    close(file);
     
     while((entry = readdir( d ))){
         if (entry->d_type!=4) {
@@ -332,27 +314,25 @@ struct song_node* getMP3names(struct song_node* list) {
                 *rm = '\0';
                 
                 list = order(list, songname);
-                
-                
-                int file = open(librarypath, O_WRONLY | O_APPEND);
-                err(file, "file error");
-                
-                write(file, songname, sizeof(songname));
-                write(file, "\n", 1);
-                close(file);
+//                print_list(list);
+//                printf("\n");
             }
         }
     }
     closedir(d);
     
     struct song_node* cpylist = list;
-    file = open(librarypath, O_WRONLY | O_TRUNC);
+    file = open(librarypath, O_WRONLY);
+    err(file, "file error");
+    
     while(cpylist != NULL){
         write(file, cpylist->name, strlen(cpylist->name));
         write(file, "\n", 1);
         cpylist = cpylist->next;
     }
     
+    close(file);
+
     return list;
 }
 
