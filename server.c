@@ -12,27 +12,34 @@ void subserver_logic(int user_socket){
     err(write(user_socket, &pid, sizeof(pid)), "write error");
     printf("User %d connected to subserver %d\n", ibuff, pid);
     
-    char buff[BUFFER_SIZE];
-    while((read(user_socket, buff, sizeof(buff))) > 0) {
-        
-    }
+//    char buff[BUFFER_SIZE];
+//    while((read(user_socket, buff, sizeof(buff))) > 0) {
+//        
+//    }
 }
 
 int main(int argc, char *argv[] ) {
     signal(SIGINT, sighandler);
     
     int listen_socket = server_setup();
+    
+    fd_set read_fds;
+
+    char buff[1025]="";
 
     while(1) {
-        int user_socket = server_tcp_handshake(listen_socket);
-
-        int f = fork();
-        if (f == 0) {
+        
+        FD_ZERO(&read_fds);
+        FD_SET(listen_socket,&read_fds);
+        int i = select(listen_socket+1, &read_fds, NULL, NULL, NULL);
+        
+        // if socket
+        if (FD_ISSET(listen_socket, &read_fds)) {
+            //accept the connection
+            int user_socket = server_tcp_handshake(listen_socket);
             subserver_logic(user_socket);
             close(user_socket);
-            exit(0);
-        }else if (f > 0) {
-            close(user_socket);
-        }else err(errno, "forking error");
+        }
+
     }
 }
