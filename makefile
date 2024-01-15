@@ -15,4 +15,4 @@ library.o: library.c library.h
 	@gcc -c library.c
 
 clean: 
-	@rm *.o server user *.txt
+	@rm *.o server user

@@ -11,70 +11,36 @@ static void sighandler(int signo) {
 	}
 }
 
-void subserver_logic(int user_socket, fd_set read_fds, int* p_arry){
+void subserver_logic(int user_socket){
     int pid = getpid();
     int ibuff;
     err(read(user_socket, &ibuff, sizeof(ibuff)), "read error");
     err(write(user_socket, &pid, sizeof(pid)), "write error");
     printf("User %d connected to subserver %d\n", ibuff, pid);
-	
-	int fifo = open( ".p_pipe", O_WRONLY);
-	err( fifo, "error opening p_pipe");
-    
-	if( FD_ISSET( fifo, &read_fds)){
-		char buff[BUFFER_SIZE];
-		while((read(user_socket, buff, strlen(buff))) > 0) {
-			printf( "from %d: %s\n", ibuff, buff);
-			write( fifo, buff, strlen( buff));
-		}
-	}
-	close( fifo);
 }
 
 int main(int argc, char *argv[] ) {
     signal(SIGINT, sighandler);
     
     int listen_socket = server_setup();
-	
-	fd_set read_fds;
-	int p_arry[10][2];
-	for( int i = 0; i < 10; i++){
-		pipe( p_arry[i]);
-	}
-	int usr = 0;
-	
-	char* p_pipe = ".p_pipe";
-	err( mkfifo( p_pipe, 0644), "error creating WKP");
-	
-	int fifo = open( p_pipe, O_RDONLY);
-	err( fifo, "error opening p_pipe");
+    
+    fd_set read_fds;
+
+    char buff[1025]="";
 
     while(1) {
-		
-		FD_ZERO( &read_fds);
-		for( int i = 0; i < 10; i++){
-			FD_SET( p_arry[i][READ], &read_fds);
-			FD_SET( p_arry[i][WRITE], &read_fds);
-		}
-		FD_SET( fifo, &read_fds);
-		int i = select( fifo + 1, &read_fds, NULL, NULL, NULL);
-		
-        int user_socket = server_tcp_handshake(listen_socket);
+        
+        FD_ZERO(&read_fds);
+        FD_SET(listen_socket,&read_fds);
+        int i = select(listen_socket+1, &read_fds, NULL, NULL, NULL);
+        
+        // if socket
+        if (FD_ISSET(listen_socket, &read_fds)) {
+            //accept the connection
+            int user_socket = server_tcp_handshake(listen_socket);
+            subserver_logic(user_socket);
+            close(user_socket);
+        }
 
-        int f = fork();
-        if (f == 0) {
-            subserver_logic( user_socket, read_fds, p_arry[usr++]);
-            close(user_socket);
-            exit(0);
-        }else if (f > 0) {
-            close(user_socket);
-			
-			if( FD_ISSET( fifo, &read_fds)){
-				char buff[ BUFFER_SIZE];
-				read( fifo, buff, sizeof( buff));
-				printf( "from child: %s\n", buff);
-				close( fifo);
-			}
-        }else err(errno, "forking error");
     }
 }

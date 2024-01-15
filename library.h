@@ -26,6 +26,7 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 struct song_node* remove_song( struct song_node *p_node, char* playlist, char* name);
 void make_playlist( char* buff, char* playlist);
 void remove_playlist( struct song_node* p_node, char* playlist);
+void remove_all_playlists();
 void play_song( char* name);
 void play_playlist( char* playlist);
 char* shuffle(struct song_node* n);

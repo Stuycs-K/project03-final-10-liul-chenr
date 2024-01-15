@@ -263,6 +263,32 @@ void remove_playlist( struct song_node* p_node, char* playlist){
 	}
 }
 
+// removes all created playlists
+void remove_all_playlists(){
+	DIR* d;
+	char* PATH = ".";
+	struct dirent *entry;
+	d = opendir( PATH);
+	
+	char buff[ 256];
+	char* line;
+	char* token;
+	
+	while( entry = readdir( d)){
+		sprintf( buff, "%s", entry->d_name);
+		// printf( "%s\n", buff);
+		line = buff;
+		token = strsep( &line, ".");
+		// printf( "line: %s\n", line);
+
+		if( line != NULL && strcmp( line, "txt") == 0){
+			remove( entry->d_name);
+			// printf( "file removed\n");
+		}
+	}
+	closedir( d);
+}
+
 /*
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
