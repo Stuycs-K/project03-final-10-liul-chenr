@@ -5,15 +5,6 @@ int paused = 0;
 
 static void sighandler(int signo) {
     if (signo == SIGINT) exit(0);
-//    if (signo == SIGUSR1) {
-//        if (paused) {
-//
-//            paused = 0;
-//        }else{
-//            
-//            paused = 1;
-//        }
-//    }
 }
 
 void sigpipe_handler(int signo) {
@@ -63,10 +54,10 @@ void userLogic(int server_socket){
 	int iOfpl = 0;
 	
     while(1) {
-        // list = getMP3names(list);
+         list = getMP3names(list);
 //        print_list(list);
         char cmd[256];
-	printf( "\ntype 'see commands' to see the available commands\n");
+        printf( "\ntype 'see commands' to see the available commands\n");
         printf("give a command: ");
         fgets(cmd, sizeof(cmd), stdin);
         check(cmd);
@@ -93,7 +84,7 @@ void userLogic(int server_socket){
             check(plname);
             
             if (strcmp(plname, "library") == 0) print_list(list);
-		else {
+            else {
             	while( isPlaylist( plname) == 0){
                 	printf( "%s is not a valid playlist\n", plname);
                 	printf( "give a new playlist: ");
@@ -110,6 +101,7 @@ void userLogic(int server_socket){
             	printf("\n%s songs:\n", plname);
             	print_list(plist);
             }
+            
         }else if(strcmp(cmd, "play song") == 0) {
             
             printf("music library songs:\n");
@@ -147,7 +139,7 @@ void userLogic(int server_socket){
             char buff[100];
             make_playlist(buff, cmd);
             printf("playlist '%s' created\n", cmd);
-            printf("iOfpl: %d\n", iOfpl);
+            printf("iOfpl: %d, buff: %s\n", iOfpl, buff);
             playlistf[ iOfpl++] = buff;
             printf("iOfpl: %d\n", iOfpl);
             
@@ -297,7 +289,6 @@ void userLogic(int server_socket){
 
 int main(int argc, char *argv[] ) {
     signal(SIGINT, sighandler);
-    signal(SIGUSR1, sighandler);
     signal(SIGPIPE, sigpipe_handler);
     
     char* IP = "127.0.0.1";

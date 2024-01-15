@@ -312,12 +312,12 @@ struct song_node* getMP3names(struct song_node* list) {
     d = opendir(PATH);
     if (d == NULL) err(errno, "open directory error");
     
-    char library_playlist[256];
-    make_playlist(library_playlist, "library");
+    int file = open( pl, O_CREAT | O_EXCL, 0644);
+    err(file, "open file error");
 //    printf("%s created\n", library_playlist);
     
     char librarypath[270];
-    snprintf(librarypath, 270, "%s%s", library_playlist, ".txt");
+    snprintf(librarypath, 270, "%s%s", "library", ".txt");
 //    printf("librarypath: %s\n", librarypath);
     
     while((entry = readdir( d ))){
