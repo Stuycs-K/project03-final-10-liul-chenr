@@ -77,7 +77,7 @@ void userLogic(int server_socket){
     playlistf = calloc(plSize, sizeof(char*));
 
     while(1) {
-        list = getMP3names();
+        //list = getMP3names();
         int iOfplist;
         char cmd[256];
         printf( "\ntype 'see commands' to see the available commands\n");
