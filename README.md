@@ -13,10 +13,10 @@ This is a music player that plays mp3 files through the terminal. It allows the 
 How does the user install/compile/run the program.
 To install mpg123 audio player:
 - for linux/WSL:
-       1. sudo apt-get install mpg123
+- - sudo apt-get install mpg123
 - for macOS:
-       1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-       2. brew install mpg123
+- - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+- - brew install mpg123
 
 How does the user interact with this program?
 Setup:
