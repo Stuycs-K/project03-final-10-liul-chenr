@@ -37,11 +37,12 @@
 - Modified some of the other commands so that the playlists and playlistf array works as expected; all existing commands works now
 - Tested every command on lab machine; works
 
-### 2024-01-12 - Brief description
-Expanded description including how much time was spent on task.
-
-### 2024-01-15 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-12 to 2024-01-15 - Fix issues and add new helper methods (~6hrs)
+- Added resize() to resize the array of playlists
+- change the array of playlists to calloc so that resize() can realloc it
+- fixing commands (display playlists, display songs in playlist, create playlist)
+- reorganize the layout in terminal (add spacings and tabs, displaying lists when needed so that users don't have to scroll up, etc)
+- Testing on multiple lab machines
 
 ## Lala
 
