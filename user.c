@@ -78,7 +78,7 @@ void userLogic(int server_socket){
     playlistf = calloc(plSize, sizeof(char*));
 
     while(1) {
-        list = getMP3names();
+        //list = getMP3names();
         int iOfplist;
         char cmd[256];
         printf( "\ntype 'see commands' to see the available commands\n");
@@ -137,6 +137,7 @@ void userLogic(int server_socket){
             }
             
         }else if(strcmp(cmd, "play song") == 0) {
+
             printf("Music Library Songs:\n");
             print_list(list);
             printf("\ngive song name: ");
@@ -154,7 +155,6 @@ void userLogic(int server_socket){
             printf( "\ngive playlist name: ");
             fgets( cmd, sizeof( cmd), stdin);
             check( cmd);
-			
             while( isPlaylist( cmd) == 0){
                 printf( "playlist does not exist\n");
                 printf( "please give a new playlist: ");
@@ -170,7 +170,7 @@ void userLogic(int server_socket){
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
-			
+
             char filetype[100];
             printf( "\nwhat kind of playlist would you like to make?\n");
             printf( "public or private? ");
@@ -180,7 +180,6 @@ void userLogic(int server_socket){
             printf("give playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
-			
 			while( isPlaylist( cmd) == 1){
 				printf( "playlist already exist\n");
                 sleep(1);
@@ -197,16 +196,14 @@ void userLogic(int server_socket){
             if (iOfpl == (plSize - 1)) resize();
             char buff[100];
             make_playlist(buff, cmd);
-            
 			printf("playlist '%s' created\n", cmd);
             playlistf[ iOfpl++] = strdup(buff);
-			playlistf[ iOfpl++] = buff;
 			
 			if( strcmp( filetype, "public") == 0){
 				printf( "public playlist made\n");
 				err( write( server_socket, cmd, strlen( cmd)), "error writing to server");
 			}
-            
+			
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
             printf("all playlists:\n");

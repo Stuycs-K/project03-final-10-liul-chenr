@@ -1,14 +1,8 @@
 #include "network.h"
 #include "library.h"
 
-#define READ 0
-#define WRITE 1
-
 static void sighandler(int signo) {
-    if (signo == SIGINT){
-		remove( ".p_pipe");
-		exit(0);
-	}
+    if (signo == SIGINT) exit(0);
 }
 
 void subserver_logic(int user_socket){
@@ -17,6 +11,12 @@ void subserver_logic(int user_socket){
     err(read(user_socket, &ibuff, sizeof(ibuff)), "read error");
     err(write(user_socket, &pid, sizeof(pid)), "write error");
     printf("User %d connected to subserver %d\n", ibuff, pid);
+
+    
+    char buff[BUFFER_SIZE];
+    while((read(user_socket, buff, sizeof(buff))) > 0) {
+        
+    }
 }
 
 int main(int argc, char *argv[] ) {
@@ -41,6 +41,5 @@ int main(int argc, char *argv[] ) {
             subserver_logic(user_socket);
             close(user_socket);
         }
-
     }
 }
