@@ -196,7 +196,6 @@ void userLogic(int server_socket){
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
             printf("all playlists:\n");
-            printf("\tlibrary\n");
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
@@ -253,7 +252,6 @@ void userLogic(int server_socket){
         }else if (strcmp(cmd, "remove playlist") == 0) {
             
             printf("all playlists:\n");
-            printf("\tlibrary\n");
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
@@ -283,7 +281,6 @@ void userLogic(int server_socket){
         }else if (strcmp(cmd, "remove song from playlist") == 0) {
             
             printf("all playlists:\n");
-            printf("\tlibrary\n");
             for( int i = 0; playlistf[i] != NULL; i++){
                 printf("\t%s\n", playlistf[i]);
             }
