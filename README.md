@@ -1,11 +1,8 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/SQs7pKlr)
-# PROJECT NAME HERE
-Music Player
+# Music Player
 
-### GROUP NAME HERE
-
-
-Regina, Lala
+### Group Name: The Pandas
+Group Members: Regina, Lala
        
 ### Project Description:
 
@@ -14,14 +11,16 @@ This is a music player that plays mp3 files through the terminal. It allows the 
 ### Instructions:
 
 How does the user install/compile/run the program.
+
 To install mpg123 audio player:
 - for linux/WSL:
-       1. sudo apt-get install mpg123
+  - sudo apt-get install mpg123
 - for macOS:
-       1. /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-       2. brew install mpg123
+  - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  - brew install mpg123
 
 How does the user interact with this program?
+
 Setup:
 1. Open at least two terminals
 2. 'make' or 'make compile' on any one terminal
