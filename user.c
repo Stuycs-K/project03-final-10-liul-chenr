@@ -5,12 +5,15 @@ int plSize = 5;
 struct song_node** playlists;
 char** playlistf;
 int iOfpl = 0;
+char id[10];
 
 static void sighandler(int signo) {
     if (signo == SIGINT) {
         free(playlists);
         free(playlistf);
-		remove_all_playlists();
+		remove_all_playlists( id);
+		rmdir( id);
+		remove( "library.txt");
         exit(0);
     }
 }
@@ -65,6 +68,8 @@ void command_library() {
 
 void userLogic(int server_socket){
     int pid = getpid();
+	sprintf( id, "%d", pid);
+	
     int serverpid;
     err(write(server_socket, &pid, sizeof(pid)), "write error");
     err(read(server_socket, &serverpid, sizeof(serverpid)), "read error");
@@ -113,7 +118,7 @@ void userLogic(int server_socket){
             
             if (strcmp(plname, "library") == 0) print_list(list);
             else {
-            	while( isPlaylist( plname) == 0){
+            	while( isPlaylist( plname, id) == 0){
                 	printf( "%s is not a valid playlist\n", plname);
                     sleep(1);
                     printf("\nall playlists:\n");
@@ -155,13 +160,13 @@ void userLogic(int server_socket){
             printf( "\ngive playlist name: ");
             fgets( cmd, sizeof( cmd), stdin);
             check( cmd);
-            while( isPlaylist( cmd) == 0){
+            while( isPlaylist( cmd, id) == 0){
                 printf( "playlist does not exist\n");
                 printf( "please give a new playlist: ");
                 fgets( cmd, sizeof( cmd), stdin);
                 check( cmd);
             }
-            play_playlist( cmd);
+            play_playlist( cmd, id);
             
         }else if(strcmp(cmd, "create playlist") == 0) {
             
@@ -174,7 +179,7 @@ void userLogic(int server_socket){
             printf("\ngive playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
-			while( isPlaylist( cmd) == 1){
+			while( isPlaylist( cmd, id) == 1){
 				printf( "playlist already exist\n");
                 sleep(1);
                 printf("\nall playlists:\n");
@@ -189,7 +194,7 @@ void userLogic(int server_socket){
             
             if (iOfpl == (plSize - 1)) resize();
             char buff[100];
-            make_playlist(buff, cmd);
+            make_playlist(buff, cmd, id);
 			printf("playlist '%s' created\n", cmd);
             playlistf[ iOfpl++] = strdup(buff);
 			
@@ -205,7 +210,7 @@ void userLogic(int server_socket){
             check(plname);
 //            printf("plname: %s\n", plname);
 
-			while( isPlaylist( plname) == 0){
+			while( isPlaylist( plname, id) == 0){
 				printf( "%s is not a valid playlist\n", plname);
                 sleep(1);
                 printf("all playlists:\n");
@@ -245,7 +250,7 @@ void userLogic(int server_socket){
 			}
             
             struct song_node* plist = playlists[iOfplist];
-            plist = add_song(list, plist, plname, sname);
+            plist = add_song(list, plist, plname, sname, id);
             printf("song '%s' added to playlist '%s'\n", sname, plname);
             playlists[iOfplist] = plist;
 
@@ -259,7 +264,7 @@ void userLogic(int server_socket){
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
             
-            if( isPlaylist( cmd) == 0){
+            if( isPlaylist( cmd, id) == 0){
                 printf( "%s is not a valid playlist\n", cmd);
             }else{
                 for( int i = 0; playlistf[i] != NULL; i++){
@@ -267,7 +272,7 @@ void userLogic(int server_socket){
                         iOfplist = i;
                 }
                 
-                remove_playlist(playlists[iOfplist], playlistf[iOfplist]);
+                remove_playlist(playlists[iOfplist], playlistf[iOfplist], id);
                 printf("playlist '%s' removed\n", cmd);
                 for(int i = iOfplist; i < plSize - 1; i++) {
                     playlistf[i] = playlistf[i + 1];
@@ -289,7 +294,7 @@ void userLogic(int server_socket){
             fgets(plname, sizeof(plname), stdin);
             check(plname);
 
-            if( isPlaylist( plname) == 0){
+            if( isPlaylist( plname, id) == 0){
 				printf( "%s is not a valid playlist\n", plname);
             }else{
                 for( int i = 0; playlistf[i] != NULL; i++){
@@ -308,7 +313,7 @@ void userLogic(int server_socket){
                 if( inLibrary( plist, sname) == 0){
                     printf( "%s is not in the playlist %s\n", sname, plname);
                 }else{
-                    playlists[iOfplist] = remove_song(plist, plname, sname);
+                    playlists[iOfplist] = remove_song(plist, plname, sname, id);
                     printf("song '%s' removed from playlist '%s'\n", sname, plname);
                 }
             }
@@ -329,7 +334,7 @@ void userLogic(int server_socket){
                 char* s = shuffle(list);
                 play_song(s);
             }else {
-                while( isPlaylist( plname) == 0){
+                while( isPlaylist( plname, id) == 0){
                     printf( "%s is not a valid playlist\n", plname);
                     sleep(1);
                     printf("\nall playlists:\n");

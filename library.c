@@ -121,7 +121,7 @@ int inLibrary( struct song_node* library, char* name){
 	Add the song to the linked list version of playlist, and then write the whole list to the playlist file
 	Returns the first node of the linked list
 */
-struct song_node* add_song( struct song_node* lib, struct song_node* p_node, char* playlist, char* name){
+struct song_node* add_song( struct song_node* lib, struct song_node* p_node, char* playlist, char* name, char* id){
 	
 	if( inLibrary( lib, name) == 0){
 		printf( "song not in library\n");
@@ -130,7 +130,7 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 		fgets( buff, 99, stdin);
 		buff[ strlen(buff) - 1] = 0;
 		printf( "new song: %s\n", buff);
-		add_song( lib, p_node, playlist, buff);
+		add_song( lib, p_node, playlist, buff, id);
 	}
 	else{
 		//inserts the song into the linked list playlist
@@ -138,8 +138,12 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 		struct song_node* newNode = p_node;
 		
 		//converts the playlist name to include the .txt extension
-		char pl[ strlen( playlist) + 4];
-		extension( pl, playlist, ".txt");
+		char folder[ strlen( playlist) + 1 + strlen(id)];
+		strcpy( folder, id);
+		strcat( folder, "/");
+		strcat( folder, playlist);
+		char pl[ strlen(folder) + 4];
+		extension( pl, folder, ".txt");
 		
 		//opens the playlist file
 		// printf( "opening %s\n", playlist);
@@ -164,7 +168,7 @@ struct song_node* add_song( struct song_node* lib, struct song_node* p_node, cha
 	Removes the song from the linked list version of the playlist, and then writes the whole list to the playlist file
 	Returns the first node of the linked list
 */
-struct song_node* remove_song( struct song_node *p_node, char* playlist, char* name){
+struct song_node* remove_song( struct song_node *p_node, char* playlist, char* name, char* id){
 	struct song_node* remove = p_node;
 	struct song_node* f = NULL;
 	
@@ -176,8 +180,12 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 			
 			// printf( "writing to file\n");
 			//converts the playlist name to include the .txt extension
-			char pl[ strlen( playlist) + 4];
-			extension( pl, playlist, ".txt");
+			char folder[ strlen( playlist) + 1 + strlen(id)];
+			strcpy( folder, id);
+			strcat( folder, "/");
+			strcat( folder, playlist);
+			char pl[ strlen(folder) + 4];
+			extension( pl, folder, ".txt");
 			
 			//opens the playlist file
 			// printf( "opening %s\n", playlist);
@@ -209,9 +217,18 @@ struct song_node* remove_song( struct song_node *p_node, char* playlist, char* n
 	Returns 1 if true
 			0 if false
 */
-int isPlaylist( char* playlist){
-	char pl[ strlen( playlist) + 4];
-	extension( pl, playlist, ".txt");
+int isPlaylist( char* playlist, char* id){
+	char folder[ strlen( playlist) + 1 + strlen(id)];
+	strcpy( folder, id);
+	strcat( folder, "/");
+	strcat( folder, playlist);
+	char pl[ strlen(folder) + 4];
+	extension( pl, folder, ".txt");
+	
+	DIR* d;
+	d = opendir( id);
+	if( d == NULL)
+		return 0;
 	
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
 	if( file == -1){
@@ -224,8 +241,8 @@ int isPlaylist( char* playlist){
 	return 0;
 }
 
-void display_playlist(char * playlist) {
-    if(isPlaylist(playlist) == 1) {
+void display_playlist(char * playlist, char* id) {
+    if(isPlaylist(playlist, id) == 1) {
         char buff[256];
         extension(buff, playlist, ".txt");
 //        printf("buff: %s\n", buff);
@@ -248,12 +265,16 @@ void display_playlist(char * playlist) {
 	Takes in a linked list version of the playlist, and the playlist name
 	Removes the playlist file and frees the linked list associated with the playlist.
 */
-void remove_playlist( struct song_node* p_node, char* playlist){
+void remove_playlist( struct song_node* p_node, char* playlist, char* id){
 	if( strcmp( playlist, "library") == 0)
 		printf( "library cannot be removed\n");
-	else if( isPlaylist( playlist) == 1){
-		char pl[ strlen( playlist) + 4];
-		extension( pl, playlist, ".txt");
+	else if( isPlaylist( playlist, id) == 1){
+		char folder[ strlen( playlist) + 1 + strlen(id)];
+		strcpy( folder, id);
+		strcat( folder, "/");
+		strcat( folder, playlist);
+		char pl[ strlen(folder) + 4];
+		extension( pl, folder, ".txt");
 		
 		remove( pl);
 		free_list( p_node);
@@ -264,28 +285,31 @@ void remove_playlist( struct song_node* p_node, char* playlist){
 }
 
 // removes all created playlists
-void remove_all_playlists(){
+void remove_all_playlists( char* id){
 	DIR* d;
-	char* PATH = ".";
+	d = opendir( id);
+	if( d == NULL) printf( "error opening dir %s\n", strerror( errno));
 	struct dirent *entry;
-	d = opendir( PATH);
 	
-	char buff[ 256];
+	char buff[256];
 	char* line;
 	char* token;
+	char PATH[ 256];
+	strcpy( PATH, id);
+	strcat( PATH, "/");
 	
 	while( entry = readdir( d)){
 		sprintf( buff, "%s", entry->d_name);
-		// printf( "%s\n", buff);
 		line = buff;
 		token = strsep( &line, ".");
 		// printf( "line: %s\n", line);
-
+		
 		if( line != NULL && strcmp( line, "txt") == 0){
-			remove( entry->d_name);
-			// printf( "file removed\n");
+			strcat( PATH, entry->d_name);
+			remove( PATH);
 		}
 	}
+	
 	closedir( d);
 }
 
@@ -293,12 +317,21 @@ void remove_all_playlists(){
 	Takes in a char buffer and a playlist name
 	Creates a text file using the playlist name
 */
-void make_playlist( char* buff, char* playlist){
+void make_playlist( char* buff, char* playlist, char* id){
     
+	DIR* d;
+	d = opendir( id);
+	if( d == NULL)
+		mkdir( id, 0755);
+	
     //converts the playlist name to include the .txt extension
-    char pl[ strlen( playlist) + 4];
-    extension( pl, playlist, ".txt");
-    //printf( "%s\n", pl);
+    char folder[ strlen( playlist) + 1 + strlen(id)];
+	strcpy( folder, id);
+	strcat( folder, "/");
+	strcat( folder, playlist);
+	char pl[ strlen(folder) + 4];
+	extension( pl, folder, ".txt");
+    // printf( "%s\n", pl);
     
 	//create the file using the playlist name
 	int file = open( pl, O_CREAT | O_EXCL, 0644);
@@ -307,6 +340,7 @@ void make_playlist( char* buff, char* playlist){
     strcpy( buff, playlist);
 	
 	close( file);
+	closedir( d);
 }
 
 //get the song names of all mp3 in the music library
@@ -401,10 +435,14 @@ void play_song( char* name){
 	Takes in a playlist name
 	Gets each song name in the playlist and plays it
 */
-void play_playlist( char* playlist){
+void play_playlist( char* playlist, char* id){
 	
-	char pl[ strlen( playlist) + 4];
-	extension( pl, playlist, ".txt");
+	char folder[ strlen( playlist) + 1 + strlen(id)];
+	strcpy( folder, id);
+	strcat( folder, "/");
+	strcat( folder, playlist);
+	char pl[ strlen(folder) + 4];
+	extension( pl, folder, ".txt");
 	
 	FILE* p_file = fopen( pl, "r");
 	if( p_file == NULL){
@@ -413,7 +451,7 @@ void play_playlist( char* playlist){
 		fgets( buff, 99, stdin);
 		buff[ strlen(buff) - 1] = 0;
 		printf( "playing from %s\n", buff);
-		play_playlist( buff);
+		play_playlist( buff, id);
 	}
 	
 	char song[100];
