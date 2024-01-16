@@ -87,4 +87,5 @@
 
 ### 2024-01-12 to 2024-01-25 - Wrap-up and testing
 - Added a function to remove all playlists after a user exits (~20 min)
-- Tested the program on marge and the lab machine. Fixed an issue with "remove song from playlist," in which random things were displayed in "display songs in playlist" after a song was removed. Removed the bit of code in "create playlist" that asked if the user wants to create a public or private playlist. (~30 min) 
+- Tested the program on marge and the lab machine. Fixed an issue with "remove song from playlist," in which random things were displayed in "display songs in playlist" after a song was removed. Removed the bit of code in "create playlist" that asked if the user wants to create a public or private playlist. (~30 min)
+- Modified remove_all_playlists so that the user only removes the playlists they made. This involved creating directories using the user's pid. (~1 hour)
