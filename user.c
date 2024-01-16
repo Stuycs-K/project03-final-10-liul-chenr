@@ -322,7 +322,7 @@ void userLogic(int server_socket){
                 if( inLibrary( plist, sname) == 0){
                     printf( "%s is not in the playlist %s\n", sname, plname);
                 }else{
-                    remove_song(plist, plname, sname);
+                    playlists[iOfplist] = remove_song(plist, plname, sname);
                     printf("song '%s' removed from playlist '%s'\n", sname, plname);
                 }
             }
