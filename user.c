@@ -171,13 +171,7 @@ void userLogic(int server_socket){
                 printf("\t%s\n", playlistf[i]);
             }
 
-            char filetype[100];
-            printf( "\nwhat kind of playlist would you like to make?\n");
-            printf( "public or private? ");
-            fgets( filetype, sizeof( filetype), stdin);
-            check( filetype);
-
-            printf("give playlist name: ");
+            printf("\ngive playlist name: ");
             fgets(cmd, sizeof(cmd), stdin);
             check(cmd);
 			while( isPlaylist( cmd) == 1){
@@ -198,11 +192,6 @@ void userLogic(int server_socket){
             make_playlist(buff, cmd);
 			printf("playlist '%s' created\n", cmd);
             playlistf[ iOfpl++] = strdup(buff);
-			
-			if( strcmp( filetype, "public") == 0){
-				printf( "public playlist made\n");
-				err( write( server_socket, cmd, strlen( cmd)), "error writing to server");
-			}
 			
         }else if(strcmp(cmd, "add song to playlist") == 0) {
 
