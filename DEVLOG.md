@@ -85,8 +85,6 @@
 - Modified "make playlist" to ask the user if they want to make a public or private playlist. The name of the playlist getting made is then sent to the server. (~5 min)
 - Working on implementing pipes between the server and its subservers using select. For "public playlists" we want the user to send the name of the playlist (and any songs they add to it) to the subserver connected to it. Then the subserver will send the playlist to the main server, which will then keep track of each public playlist each user makes. The server is then supposed to send the information about each playlist to the other subservers, which would then send the information to their users. Work in progress, I'm trying to figure out how select works with pipes. (~1 hour)
 
-### 2024-01-12 - Brief description
-Expanded description including how much time was spent on task.
-
-### 2024-01-15 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-12 to 2024-01-25 - Wrap-up and testing
+- Added a function to remove all playlists after a user exits (~20 min)
+- Tested the program on marge and the lab machine. Fixed an issue with "remove song from playlist," in which random things were displayed in "display songs in playlist" after a song was removed. Removed the bit of code in "create playlist" that asked if the user wants to create a public or private playlist. (~30 min) 
